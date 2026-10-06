@@ -9,15 +9,15 @@ body:
         Thanks for taking the time to report a bug! Please **search existing issues** first and make sure you are on the
         latest version (**Settings → Updates → Check now**).
 
-        **Security problems must not be reported here.** Use [private vulnerability reporting](https://github.com/gitkalenyuk/kadr/security/advisories/new) instead.
+        **Security problems must not be reported here.** Use [private vulnerability reporting](https://github.com/gitkalenyuk/kadr-releases/security/advisories/new) instead.
         Issues are public: don't attach private videos or your `api-token` file.
 
   - type: input
     id: version
     attributes:
       label: Kadr version
-      description: Open **Settings → About** and copy the version, e.g. `0.1.0-beta.1` (or run `kadrctl run app.version`).
-      placeholder: 0.1.0-beta.1
+      description: Open **Settings → About** and copy the version, e.g. `1.0.0` (or run `kadrctl run app.version`).
+      placeholder: 1.0.0
     validations:
       required: true
 

@@ -5,6 +5,44 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 [Semantic Versioning](https://semver.org/). Versions with a suffix such as `-beta.1` are pre-releases and are
 delivered through the **Beta** update channel.
 
+## [1.0.0] - 2026-10-06
+
+Kadr is out of beta. Everything you see — every clip, photo, filter, effect, transition, animation and title — is now
+drawn on the graphics card, so exports finish in a fraction of the time and the processor stays free.
+
+### New
+
+- **GPU rendering on NVIDIA, AMD, Intel and Apple Silicon.** The player, frame previews, contact sheets and export are
+  composited on the graphics card: transforms, crops, masks, chroma key, every blend mode, all 227 filters and LUTs,
+  the Adjust tab, grain and vignette, all 195 video effects, all 221 transitions, all clip animations, and text with
+  every style and letter animation. Kadr uses Vulkan or Direct3D 12 on Windows and Metal on macOS (Apple Silicon M1–M4
+  and Intel Macs). Without a usable graphics card (no driver, remote desktop, virtual machine) Kadr falls back to the
+  processor automatically and the picture is the same.
+- **Much faster export.** Video frames are decoded by the graphics card (NVDEC, AMF, Quick Sync, VideoToolbox),
+  composited on it and handed to the hardware encoder without a round trip through the processor. Measured on an
+  RTX 3060 at 1080p30: a 53-minute documentary with 541 cuts, LUT filters, grain, dust and titles exports in
+  6 minutes (260 fps, 8.7× real time) instead of 46 minutes; a 1-minute project in 8 seconds instead of 50. The
+  processor does about 15× less work, and the sound is mixed while the picture renders instead of before it.
+- **Choose how much video memory Kadr may use.** Settings → Rendering shows each graphics card with its total memory.
+  Set a limit (or leave it on Auto); Kadr always keeps a reserve free for Windows and other apps (0.5 GB by default),
+  so with a 12 GB card and "12 GB" chosen it uses at most 11.5 GB. Caches, frames in flight and the number of hardware
+  decoders follow the limit, and changes apply to the next frame or export without a restart. Pick the graphics card
+  and the mode (Auto, GPU, CPU) in the same place, or through `render.settings.set`.
+- **Configurable API port.** Settings → API changes the address the local API listens on (default
+  `127.0.0.1:7777`); the app moves to the new port at once. `kadrctl`, `kadr-mcp` and the Go client find the running
+  Kadr automatically through `api-endpoint.json` in the data folder, so agents keep working after a change.
+  `KADR_ADDR` still overrides everything. New commands: `render.devices`, `render.settings.get`,
+  `render.settings.set`, `app.api.get`, `app.api.set`; `export.status` and `app.version` report the active renderer.
+
+### Changed
+
+- **Version 1.0.0, out of beta.** Installed copies follow the Stable update channel by default; beta testers are
+  moved from Beta to Stable unless they chose Beta themselves.
+- **Distribution by invitation.** Kadr is shared privately. Installers come from the person who invited you; the
+  website keeps the documentation for people and AI agents but no longer offers downloads. Automatic updates need a
+  GitHub access token from the vendor (Settings → Updates, `update.settings {"github_token": "…"}` or the
+  `KADR_UPDATE_TOKEN` environment variable); without one, "Check now" simply says the update channel is private.
+
 ## [0.1.0-beta.4] - 2026-10-06
 
 Export is about four times faster, and two annoying errors are gone.

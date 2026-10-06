@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
-# Publishes a Kadr release to the public binaries-only repository (default gitkalenyuk/kadr).
+# Publishes a Kadr release to the PRIVATE binaries-only repository (default gitkalenyuk/kadr-releases).
+# Kadr 1.0 is distributed by invitation: the repository must stay private (the script warns when it is
+# public), and the website (public repo gitkalenyuk/kadr) has no download links.
 #
 # Usage:
 #   scripts/publish.sh [options] VERSION DIST
 #
-#   VERSION   release version, e.g. 0.1.0-beta.1 or 0.1.0 (a leading "v" is accepted)
+#   VERSION   release version, e.g. 1.0.0 or 1.1.0-beta.1 (a leading "v" is accepted)
 #   DIST      folder with the built assets, normally <source repo>/dist/<VERSION>
 #
 # Options:
 #   --dry-run               run every check and print every command, change nothing
-#   --source DIR            Kadr source tree (site/, build/brand/, build/legal/, internal/update/pubkey.go);
+#   --source DIR            Kadr source tree (build/brand/, build/legal/, internal/update/pubkey.go);
 #                           default: the parent folder of this release repo
-#   --repo OWNER/NAME       GitHub repository (default gitkalenyuk/kadr)
+#   --repo OWNER/NAME       GitHub repository (default gitkalenyuk/kadr-releases, private)
 #   --notes-file FILE       release notes instead of the CHANGELOG.md section
 #   --public-key BASE64     Ed25519 public key to verify latest.json.sig (default: from internal/update/pubkey.go,
 #                           else keys/update-signing.ed25519.pub)
@@ -23,13 +25,15 @@
 #      latest.json.sig; latest.json version/installer/url/sha256/size; SHA256SUMS.txt; the Ed25519 signature
 #      (with OpenSSL 3 when the public key is known)
 #   2. release notes from CHANGELOG.md "## [VERSION]" (the "Unreleased" heading is stamped with today's date)
-#   3. preflight: own git repo on main with an origin remote, gh logged in, release does not exist yet
-#   4. refresh site/ (mirror), assets/logo.svg, LICENSE, THIRD_PARTY_NOTICES.md, keys/update-signing.ed25519.pub
+#   3. preflight: own git repo on main with an origin remote, gh logged in, release does not exist yet,
+#      the repository is private
+#   4. refresh assets/logo.svg, LICENSE, THIRD_PARTY_NOTICES.md, keys/update-signing.ed25519.pub
+#      (no website here any more: it is published from gitkalenyuk/kadr)
 #   5. git commit + git push origin main; gh release create vVERSION <assets> (+ --prerelease for -suffix versions)
 #   6. print the URLs
 #
 # Example:
-#   scripts/publish.sh --dry-run 0.1.0-beta.1 ../dist/0.1.0-beta.1
+#   scripts/publish.sh --dry-run 1.0.0 ../dist/1.0.0
 
 set -euo pipefail
 
@@ -37,7 +41,7 @@ set -euo pipefail
 
 DRY_RUN=0
 SOURCE=""
-REPO="gitkalenyuk/kadr"
+REPO="gitkalenyuk/kadr-releases"
 NOTES_FILE=""
 PUBLIC_KEY=""
 ALLOW_MISSING_MEDIA=0
@@ -286,8 +290,8 @@ else
   ok "CHANGELOG.md section '$head_line' ($(wc -l < "$TMP/notes.md" | tr -d ' ') lines)"
 fi
 {
-  printf '\n\n---\n\n**Downloads:** `%s` (installer, recommended) or `%s` (portable). ' "$INSTALLER" "$PORTABLE"
-  printf 'Check them against `SHA256SUMS.txt`. Installed copies of Kadr update themselves'
+  printf '\n\n---\n\n**Files:** `%s` (installer, recommended) or `%s` (portable). ' "$INSTALLER" "$PORTABLE"
+  printf 'Check them against `SHA256SUMS.txt`. Kadr is distributed by invitation: installed copies with a GitHub access token for this repository update themselves'
   if [ $IS_PRE = 1 ]; then printf ' when the **Beta** channel is selected (Settings \xe2\x86\x92 Updates).\n'
   else printf ' (Settings \xe2\x86\x92 Updates).\n'; fi
 } >> "$TMP/notes.md"
@@ -327,6 +331,13 @@ else
   fi
   ok "release $TAG does not exist yet"
 fi
+if have gh; then
+  # Read-only: distribution is by invitation, so the release repository must be private.
+  if vis="$(gh repo view "$REPO" --json visibility --jq .visibility 2>&1)"; then
+    if [ "$vis" = PRIVATE ]; then ok "$REPO is private"
+    else warn "$REPO is $vis: Kadr is distributed by invitation, make it private (gh repo edit $REPO --visibility private --accept-visibility-change-consequences)"; fi
+  else warn "could not read the visibility of $REPO (gh repo view): $vis"; fi
+fi
 
 # README media referenced under assets/
 missing=()
@@ -345,20 +356,10 @@ else ok "all README media present ($count)"; fi
 # ---------------------------------------------------------------------------------------------- 4. repo content
 
 step "Refreshing repository content from the source tree"
-if [ -f "$SOURCE/site/index.html" ]; then
-  n="$(find "$SOURCE/site" -type f | wc -l | tr -d ' ')"
-  if [ $DRY_RUN = 1 ]; then dry "mirror $SOURCE/site -> $ROOT/site ($n files)"
-  else
-    mkdir -p "$ROOT/site"
-    find "$ROOT/site" -mindepth 1 -delete
-    cp -R "$SOURCE/site/." "$ROOT/site/"
-    ok "site mirrored ($n files)"
-  fi
-elif [ -f "$ROOT/site/index.html" ]; then
-  warn "no site/index.html in the source tree; keeping the existing site/ of the release repo"
-else
-  err "no website: neither $SOURCE/site nor $ROOT/site contains index.html (the Pages workflow would fail)"
-fi
+# The website is published from the separate public repository gitkalenyuk/kadr (site-repo/ of the source
+# tree), never from here: a site/ folder or a Pages workflow in this private repo is a leftover.
+[ -e "$ROOT/site" ] && warn "site/ still exists in the release repo: the website now lives in gitkalenyuk/kadr; delete site/ here"
+[ -e "$ROOT/.github/workflows/pages.yml" ] && warn ".github/workflows/pages.yml still exists: delete it (no Pages from the private release repo)"
 
 copy_file() { # src dst kind
   local src="$1" dst="$ROOT/$2" kind="$3"
@@ -425,13 +426,13 @@ run "${rel[@]}"
 # ---------------------------------------------------------------------------------------------- 6. summary
 
 step "URLs"
-info "Release:        $RELEASES/tag/$TAG"
+info "Release:        $RELEASES/tag/$TAG   (private: only people with access can open it)"
 info "Installer:      $RELEASES/download/$TAG/$INSTALLER"
 info "Portable:       $RELEASES/download/$TAG/$PORTABLE"
 info "Manifest:       $RELEASES/download/$TAG/latest.json"
-if [ $IS_PRE = 1 ]; then info "Updater:        pre-release -> offered to the Beta channel (GitHub API releases list)"
-else info "Updater:        $RELEASES/latest/download/latest.json"; fi
-info "Website:        https://$(printf '%s' "$OWNER" | lower).github.io/$NAME/  (Pages deploy: https://github.com/$REPO/actions)"
+if [ $IS_PRE = 1 ]; then info "Updater:        pre-release -> offered to the Beta channel (GitHub API releases list, with an access token)"
+else info "Updater:        GitHub API /repos/$REPO/releases/latest (with an access token)"; fi
+info "Share:          send the installer to invited users yourself; the website has no download links"
 info "Repository:     https://github.com/$REPO"
 
 if [ ${#WARNINGS[@]} -gt 0 ]; then

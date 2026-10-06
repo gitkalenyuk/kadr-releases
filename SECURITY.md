@@ -15,7 +15,7 @@ Security fixes are released for:
 **Do not open a public issue for security problems.**
 
 Report them privately through GitHub:
-**[Security → Report a vulnerability](https://github.com/gitkalenyuk/kadr/security/advisories/new)**.
+**[Security → Report a vulnerability](https://github.com/gitkalenyuk/kadr-releases/security/advisories/new)**.
 
 Please include:
 
@@ -65,8 +65,12 @@ Kadr updates itself from the releases of this repository. Every release contains
 
 The updater:
 
-1. downloads `latest.json` and `latest.json.sig` over HTTPS from GitHub (stable channel:
-   `releases/latest/download/…`; the beta channel also considers pre-releases from the GitHub releases API);
+1. downloads `latest.json` and `latest.json.sig` over HTTPS from GitHub. This repository is private (Kadr is
+   distributed by invitation), so the updater uses the GitHub REST API with the access token the user saved
+   (`update.settings {"github_token": …}` or `KADR_UPDATE_TOKEN`): `releases/latest` for the stable channel, the
+   releases list for beta, and the API asset URLs for downloads. The token is sent only to `api.github.com` (Go drops
+   it on GitHub's redirect to the signed asset storage URL), is stored only in the user's `settings.json` and is never
+   logged or returned by any command. Without access the updater reports a private channel and does nothing else;
 2. **verifies the Ed25519 signature** with the public key compiled into Kadr, and rejects the manifest if it does
    not verify;
 3. ignores versions that are not newer than the installed one;
@@ -75,8 +79,8 @@ The updater:
    data.
 
 The private signing key never leaves the maintainer's release machine and is never stored in any repository.
-Builds made without the public key (development builds) never install updates: they only offer a link to the
-download page.
+Builds made without the public key (development builds) never install updates: they only report that a new version
+exists.
 
 > **Known limitation.** The installer and the executables are not yet signed with an Authenticode certificate, so
 > SmartScreen may warn on first download. The update path does not rely on Authenticode: it relies on the Ed25519
@@ -95,7 +99,7 @@ and choose its folder instead (`tools.set_ffmpeg_dir`).
 ### Hashes
 
 ```powershell
-Get-FileHash .\Kadr-Setup-0.1.0-beta.1-x64.exe -Algorithm SHA256
+Get-FileHash .\Kadr-Setup-1.0.0-x64.exe -Algorithm SHA256
 Get-Content .\SHA256SUMS.txt
 ```
 
@@ -122,7 +126,10 @@ Then check that the `sha256` of the installer in `latest.json` matches the file 
 
 ## The local API
 
-- The API listens on **`127.0.0.1:7777`** (loopback only). Change it with `KADR_ADDR`.
+- The API listens on **`127.0.0.1:7777`** (loopback only) by default. Change the port in Settings → API or with
+  `app.api.set` (binding to all interfaces needs an explicit `allow_remote` and is not recommended); `KADR_ADDR`
+  overrides it for one process. The running app writes its address and token file to `api-endpoint.json` in the
+  data folder (removed on exit), which is how `kadr-mcp` and `kadrctl` find it.
 - Every request needs the token from **`%APPDATA%\Kadr\api-token`**, a random 192-bit value created on first
   run inside your user profile. Send it as `Authorization: Bearer <token>`. WebSocket clients, which cannot set
   headers, pass it as `?token=`.

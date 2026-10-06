@@ -8,18 +8,19 @@ Kadr is free software maintained in spare time. Support is best effort, and good
 |---|---|
 | Learn how to do something | The [website and docs](https://gitkalenyuk.github.io/kadr/), the [FAQ](README.md#faq), and the built-in command reference at `http://127.0.0.1:7777/docs` while Kadr is running |
 | Set up an AI agent (MCP) | [Quick start for AI agents](README.md#quick-start-for-ai-agents) |
-| Report a bug or a crash | [Bug report](https://github.com/gitkalenyuk/kadr/issues/new?template=bug_report.yml) |
-| Suggest a feature, effect or command | [Feature request](https://github.com/gitkalenyuk/kadr/issues/new?template=feature_request.yml) |
+| Report a bug or a crash | [Bug report](https://github.com/gitkalenyuk/kadr-releases/issues/new?template=bug_report.yml) |
+| Suggest a feature, effect or command | [Feature request](https://github.com/gitkalenyuk/kadr-releases/issues/new?template=feature_request.yml) |
 | Report a security problem | **Privately**, see [SECURITY.md](SECURITY.md). Never in a public issue |
 
-Before opening an issue, please [search existing issues](https://github.com/gitkalenyuk/kadr/issues?q=is%3Aissue)
+Before opening an issue, please [search existing issues](https://github.com/gitkalenyuk/kadr-releases/issues?q=is%3Aissue)
 (open and closed) and update to the latest version: **Settings → Updates → Check now**.
 
 ## What to include in a bug report
 
 1. **Kadr version** from **Settings → About**, and whether you use the installer or the portable zip.
 2. **Windows version**: press `Win+R`, type `winver` and press Enter.
-3. **GPU and driver version**, especially for export, preview or auto-caption problems.
+3. **GPU and driver version** and the active renderer (`kadrctl run render.settings.get`), especially for export,
+   preview or auto-caption problems.
 4. **Steps to reproduce**, starting from a new project if possible.
 5. **What happened, and what you expected.** For API/MCP problems include the command, its arguments and the full
    error JSON (`code`, `message` and `hint`).

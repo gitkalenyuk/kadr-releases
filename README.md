@@ -15,9 +15,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/gitkalenyuk/kadr/releases"><img alt="Latest release, including betas" src="https://img.shields.io/github/v/release/gitkalenyuk/kadr?include_prereleases&sort=semver&display_name=tag&label=latest&color=1fd1db"></a>
-  <a href="https://github.com/gitkalenyuk/kadr/releases"><img alt="Release date, including betas" src="https://img.shields.io/github/release-date-pre/gitkalenyuk/kadr?label=released&color=6c55ff"></a>
-  <a href="https://github.com/gitkalenyuk/kadr/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/gitkalenyuk/kadr/total?label=downloads&color=ff3d8b"></a>
+  <a href="CHANGELOG.md"><img alt="Version 1.0.0" src="https://img.shields.io/badge/version-1.0.0-1fd1db"></a>
+  <a href="#gpu-rendering"><img alt="GPU rendering: NVIDIA, AMD, Intel, Apple Silicon" src="https://img.shields.io/badge/rendering-GPU-6c55ff"></a>
+  <a href="#install"><img alt="Distribution: by invitation" src="https://img.shields.io/badge/distribution-by%20invitation-ff3d8b"></a>
   <a href="#install"><img alt="Windows 10 and 11, x64" src="https://img.shields.io/badge/Windows-10%20%7C%2011%20x64-0078d6"></a>
   <a href="#macos-coming-soon"><img alt="macOS: coming soon" src="https://img.shields.io/badge/macOS-coming%20soon-555555"></a>
   <br>
@@ -29,8 +29,6 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/gitkalenyuk/kadr/releases"><img alt="Download for Windows" src="https://img.shields.io/badge/Download-Windows%20x64-1fd1db?style=for-the-badge"></a>
-  &nbsp;
   <a href="https://gitkalenyuk.github.io/kadr/docs/guide/"><img alt="User guide" src="https://img.shields.io/badge/Docs-for%20people-6c55ff?style=for-the-badge"></a>
   &nbsp;
   <a href="https://gitkalenyuk.github.io/kadr/docs/ai/"><img alt="Docs for AI agents" src="https://img.shields.io/badge/Docs-for%20AI%20agents-ff3d8b?style=for-the-badge"></a>
@@ -44,7 +42,7 @@
   <a href="#documentation">Docs</a> ·
   <a href="CHANGELOG.md">Changelog</a> ·
   <a href="#faq">FAQ</a> ·
-  <a href="https://github.com/gitkalenyuk/kadr/issues/new/choose">Report a bug</a>
+  <a href="https://github.com/gitkalenyuk/kadr-releases/issues/new/choose">Report a bug</a>
 </p>
 
 <p align="center">
@@ -52,9 +50,10 @@
 </p>
 
 > [!NOTE]
-> Kadr is in **public beta** (`0.1.0-beta.N` pre-releases until 0.1.0 is final). Expect rough edges and please
-> [report them](https://github.com/gitkalenyuk/kadr/issues/new/choose). This repository holds **releases,
-> documentation and the website only**: Kadr is closed-source freeware.
+> **Kadr 1.0 is distributed by invitation.** This private repository holds the releases (installers are attached to
+> its Releases, visible only to people with access), the changelog and the licence texts. The public
+> [website](https://gitkalenyuk.github.io/kadr/) keeps the documentation for people and AI agents but offers no
+> downloads: get the installer from the person who invited you. Kadr is closed-source freeware.
 
 ## Why Kadr
 
@@ -92,7 +91,8 @@ apart. Many edits run as one atomic, undoable **batch**, with a **dry run**.
 
 **Offline by design**
 
-Rendering, export, Whisper auto captions, text-to-speech, background removal and scene detection run on your PC.
+Rendering (on your graphics card), export, Whisper auto captions, text-to-speech, background removal and scene
+detection run on your PC.
 No account, no telemetry, no cloud. The local API listens on `127.0.0.1` and needs a token.
 
 </td>
@@ -109,8 +109,8 @@ No CapCut assets.
 
 **Safe updates**
 
-Updates come from this repository and install only when an **Ed25519 signature** and the installer's
-**SHA-256** both check out. Stable and Beta channels, skip a version, or switch checks off.
+Updates come from this private repository (with an access token from the vendor) and install only when an
+**Ed25519 signature** and the installer's **SHA-256** both check out. Skip a version, or switch checks off.
 
 </td>
 </tr>
@@ -135,11 +135,11 @@ flowchart LR
     agent["AI agent<br/>Claude Desktop, Claude Code,<br/>any MCP client"] --> mcp["kadr-mcp<br/>MCP over stdio"]
     scripts["Scripts and pipelines"] --> cli["kadrctl CLI"]
     scripts --> rest
-    mcp --> rest["REST API + WebSocket<br/>127.0.0.1:7777"]
+    mcp --> rest["REST API + WebSocket<br/>127.0.0.1:7777 (configurable)"]
     cli --> rest
     subgraph engine["Kadr engine"]
         registry["Command registry<br/>180+ documented commands"] --> model["Projects, timeline,<br/>undo and redo"]
-        model --> renderer["Renderer<br/>preview = export"]
+        model --> renderer["GPU renderer<br/>(CPU fallback)<br/>preview = export"]
     end
     ui --> registry
     rest --> registry
@@ -283,16 +283,18 @@ Everything is **original**: generated or rendered by Kadr's own engine.
 
 ## Install
 
-### Windows (available now)
+Kadr is shared **by invitation**: you get the installer from the person who invited you (or, if you have access to
+this private repository, from its Releases). The website has no download links.
 
-| Download | For |
+### Windows
+
+| File | For |
 |---|---|
-| **`Kadr-Setup-<version>-x64.exe`** | Recommended. Per-user install, no administrator rights, automatic updates |
+| **`Kadr-Setup-<version>-x64.exe`** | Recommended. Per-user install, no administrator rights, automatic updates (with an access token) |
 | `Kadr-<version>-windows-x64-portable.zip` | Run from any folder or USB drive; tells you about updates but does not install them |
 
-1. Get the file from [**Releases**](https://github.com/gitkalenyuk/kadr/releases) and run it. It installs to
-   `%LOCALAPPDATA%\Programs\Kadr` (an all-users install is optional). Optional tasks: a desktop shortcut and
-   **Add kadrctl and kadr-mcp to PATH**.
+1. Run the installer. It installs to `%LOCALAPPDATA%\Programs\Kadr` (an all-users install is optional). Optional
+   tasks: a desktop shortcut and **Add kadrctl and kadr-mcp to PATH** (recommended for AI agents).
 2. **SmartScreen.** The installer is not code-signed yet, so Windows may say *"Windows protected your PC"*: click
    **More info → Run anyway**. Compare the hash with `SHA256SUMS.txt` if you want to be sure (below).
 3. **WebView2.** Preinstalled on Windows 11 and most Windows 10 PCs; the installer points you to Microsoft's
@@ -300,6 +302,8 @@ Everything is **original**: generated or rendered by Kadr's own engine.
 4. **FFmpeg on first launch.** Kadr uses FFmpeg for all decoding and encoding but does not ship it. Choose
    **Download now** to fetch the official BtbN GPL build of FFmpeg 7.1 (about 100 MB, SHA-256 verified), or
    **I have FFmpeg** to pick your own. An `ffmpeg` on your `PATH` is found automatically.
+5. **Graphics card.** Nothing to set up: Kadr renders on the GPU when a working Vulkan or Direct3D 12 driver is
+   present, and on the processor otherwise. Keep your graphics driver up to date. See [GPU rendering](#gpu-rendering).
 
 <details>
 <summary>What gets installed, where your data lives, verifying and uninstalling</summary>
@@ -310,6 +314,8 @@ Everything is **original**: generated or rendered by Kadr's own engine.
 | `kadr-server.exe` | Headless engine and API |
 | `kadr-mcp.exe` | MCP server for AI agents (stdio) |
 | `kadrctl.exe` | Command-line client |
+| `wgpu_native.dll` | GPU renderer library ([wgpu-native](https://github.com/gfx-rs/wgpu-native), MIT/Apache-2.0) |
+| `fonts\` | 24 bundled free fonts (SIL OFL) |
 | `licenses\` | EULA and third-party notices |
 
 | Path | Contents |
@@ -321,7 +327,7 @@ Everything is **original**: generated or rendered by Kadr's own engine.
 Verify a download in PowerShell and compare with the matching line of `SHA256SUMS.txt`:
 
 ```powershell
-Get-FileHash .\Kadr-Setup-0.1.0-beta.1-x64.exe -Algorithm SHA256
+Get-FileHash .\Kadr-Setup-1.0.0-x64.exe -Algorithm SHA256
 ```
 
 Uninstall from **Settings → Apps → Installed apps → Kadr**. The uninstaller asks before deleting your projects and
@@ -332,22 +338,55 @@ the downloaded FFmpeg; answer **No** to keep them.
 ### macOS (coming soon)
 
 A universal build for Apple Silicon and Intel Macs (macOS 12 or later) is being prepared: a DMG to drag into
-Applications, the same API, MCP server and CLI inside the app bundle, and signed automatic updates. Watch the
-[releases](https://github.com/gitkalenyuk/kadr/releases) (**Watch → Custom → Releases**) to hear about it first.
+Applications, GPU rendering through Metal, the same API, MCP server and CLI inside the app bundle, and signed
+automatic updates. Ask the vendor for it when it is ready.
 
 ### Automatic updates
 
-Kadr checks this repository in the background at most once a day (or when you click **Settings → Updates → Check
+Releases live in this **private** repository, so a copy of Kadr can only see them with a GitHub access token from
+the vendor (a fine-grained token with read-only *Contents* access to `gitkalenyuk/kadr-releases`). Save it once:
+
+```powershell
+kadrctl run update.settings --github_token "github_pat_..."     # or Settings -> Updates
+# or set the KADR_UPDATE_TOKEN environment variable (it wins over the saved token)
+```
+
+The token is stored in `%APPDATA%\Kadr\settings.json` (key `update.github_token`), sent only to the GitHub API and
+never shown again (`update.settings` reports just `github_token_set`). Without a token, **Check now** simply says
+*private update channel: ask the vendor for the latest installer*, and the background check stays silent.
+
+With access, Kadr checks in the background at most once a day (or when you click **Settings → Updates → Check
 now**). Every release carries a manifest, `latest.json`, signed with Ed25519 (`latest.json.sig`); the public key is
 built into Kadr. An update installs only if **the signature is valid and the installer's SHA-256 matches**, then
-Kadr upgrades in place, keeps your projects and restarts. **Stable** gets final releases, **Beta** also gets
-pre-releases (beta builds use Beta by default). Agents can do the same with `update.check`, `update.install` and
-friends. Details and manual verification: [SECURITY.md](SECURITY.md).
+Kadr upgrades in place, keeps your projects and restarts. **Stable** (the default) gets final releases, **Beta** also
+gets pre-releases. Agents can do the same with `update.check`, `update.install` and friends. Details and manual
+verification: [SECURITY.md](SECURITY.md).
+
+### GPU rendering
+
+Kadr composites every frame on the graphics card: clips, photos, transforms, masks, blend modes, filters and LUTs,
+effects, transitions, animations and text. It uses Vulkan or Direct3D 12 on Windows (NVIDIA, AMD and Intel) and Metal
+on macOS, decodes and encodes video with the card's hardware engines, and falls back to the processor automatically
+(no driver, remote desktop, virtual machine). The picture is the same either way.
+
+| Setting | Command | Default |
+|---|---|---|
+| Mode: Auto, GPU or CPU | `render.settings.set --mode auto` | Auto |
+| Graphics card | `render.devices`, then `render.settings.set --adapter "<name>"` | the high-performance card |
+| Video memory limit | `render.settings.set --vram_limit_mb 8192` | 0 = automatic |
+| Reserve kept free for Windows | `render.settings.set --reserve_mb 512` | 512 MB |
+
+Kadr never uses more than the limit minus the reserve: with a 12 GB card and a 12 GB limit it takes at most
+11.5 GB. Changes apply to the next frame or export. `render.settings.get` and `export.status` show the active
+renderer and how much video memory Kadr uses.
 
 ## Quick start for AI agents
 
-**1. Start Kadr** (the app, or `kadr-server` for no window). The API listens on `http://127.0.0.1:7777`; the token
-is created on first run in `%APPDATA%\Kadr\api-token`, and `kadr-mcp` and `kadrctl` read it automatically.
+**1. Start Kadr** (the app, or `kadr-server` for no window). The API listens on `http://127.0.0.1:7777` by default;
+change the port in **Settings → API** or with `app.api.set`. The token is created on first run in
+`%APPDATA%\Kadr\api-token`. `kadr-mcp` and `kadrctl` find the running Kadr and its token automatically through
+`%APPDATA%\Kadr\api-endpoint.json`, so a new port needs no change in your agent; `kadrctl endpoint` shows what they
+use.
 
 **2. Connect your agent.**
 
@@ -475,7 +514,7 @@ practices, the full command reference and machine-readable files ([`llms.txt`](h
 | OS | Windows 10 1809 (64-bit) | Windows 11 (64-bit) |
 | CPU | x64 processor | 6 or more cores |
 | Memory | 4 GB | **8 GB** or more (16 GB for 4K) |
-| Graphics | Any GPU supported by Windows | NVIDIA, Intel or AMD GPU with a hardware video encoder |
+| Graphics | Any GPU (without Vulkan or Direct3D 12 Kadr renders on the CPU) | NVIDIA, AMD or Intel GPU with Vulkan or Direct3D 12, 4 GB+ video memory and a hardware video encoder |
 | Runtime | Microsoft Edge WebView2 (preinstalled on Windows 11) | |
 | FFmpeg | Downloaded by Kadr on first launch, or your own | |
 | Disk | About 1 GB for Kadr and FFmpeg, plus projects, caches and proxies | SSD |
@@ -496,8 +535,8 @@ Optional extras, detected at run time (Kadr tells you how to enable anything mis
 - **Your media stays on your computer.** Kadr does not upload, sync or analyse your files anywhere else; every AI
   tool runs locally.
 - **No account, no telemetry, no analytics, no ads.**
-- **Network access** is limited to the update check (at most once a day; you can switch it off), downloading an
-  update you accepted, the optional one-time FFmpeg download, free fonts you choose to download (from the
+- **Network access** is limited to the update check (at most once a day, only to the GitHub API and only with an
+  access token you configured; you can switch it off), downloading an update you accepted, the optional one-time FFmpeg download, free fonts you choose to download (from the
   google/fonts repository on GitHub), and ElevenLabs voices only if you add your own key (the text you synthesise is
   then sent to ElevenLabs).
 - **The local API is private.** It binds to `127.0.0.1`, accepts only loopback origins and requires the token in
@@ -565,8 +604,17 @@ not on `PATH`, set `KADR_PYTHON`. `captions.asr_status` and `ai.capabilities` sh
 <details>
 <summary><b>Can I run Kadr without a window, or on another port?</b></summary>
 
-Yes. `kadr-server` runs the same engine and API headless. `KADR_ADDR` (e.g. `127.0.0.1:7788`) changes the port for
-Kadr and the tools that talk to it; `KADR_DATA_DIR` runs isolated instances side by side.
+Yes. `kadr-server` runs the same engine and API headless. Change the port permanently in **Settings → API** (or
+`app.api.set --port 7788`); the app moves to it at once and `kadr-mcp`/`kadrctl` follow automatically. `KADR_ADDR`
+(e.g. `127.0.0.1:7788`) overrides it for one process; `KADR_DATA_DIR` runs isolated instances side by side.
+</details>
+
+<details>
+<summary><b>Does Kadr use my graphics card? Can I limit its video memory?</b></summary>
+
+Yes. Rendering, previews and export run on the GPU (NVIDIA, AMD, Intel; Apple Silicon and Intel Macs with the macOS
+build), with an automatic CPU fallback. Set a video-memory limit and a reserve for Windows in **Settings → Rendering**
+or with `render.settings.set`; see [GPU rendering](#gpu-rendering).
 </details>
 
 <details>
@@ -587,10 +635,10 @@ roadmap. The engine is cross-platform.
 ## Roadmap
 
 Plans, not promises. Vote with a thumbs-up on
-[feature requests](https://github.com/gitkalenyuk/kadr/issues?q=is%3Aissue+label%3Aenhancement).
+[feature requests](https://github.com/gitkalenyuk/kadr-releases/issues?q=is%3Aissue+label%3Aenhancement).
 
 - **macOS** (next) and **Linux** builds
-- Code-signed installer; **winget** and **Scoop** packages
+- Code-signed installer
 - Project templates with replaceable media slots
 - An original library of royalty-free music loops and beds
 - Body effects (outline, aura, clone), motion and camera tracking
@@ -601,15 +649,15 @@ Plans, not promises. Vote with a thumbs-up on
 
 - **Questions:** the [user guide](https://gitkalenyuk.github.io/kadr/docs/guide/), the
   [AI docs](https://gitkalenyuk.github.io/kadr/docs/ai/) and the [FAQ](#faq).
-- **Bugs:** [open a bug report](https://github.com/gitkalenyuk/kadr/issues/new?template=bug_report.yml) with your Kadr
-  version (**Settings → About**).
-- **Ideas:** [request a feature](https://github.com/gitkalenyuk/kadr/issues/new?template=feature_request.yml).
+- **Bugs:** [open a bug report](https://github.com/gitkalenyuk/kadr-releases/issues/new?template=bug_report.yml) with your
+  Kadr version and renderer (**Settings → About**), or tell the person who invited you.
+- **Ideas:** [request a feature](https://github.com/gitkalenyuk/kadr-releases/issues/new?template=feature_request.yml).
 - **Security issues:** report privately, see [SECURITY.md](SECURITY.md). More in [SUPPORT.md](SUPPORT.md).
 
 ## Licence
 
 Kadr is **freeware, closed source**, under the [End User Licence Agreement](LICENSE). It is built with open-source
-components (Go, Wails, React and others) listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and in the
+components (Go, Wails, React, wgpu-native and others) listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and in the
 `licenses\` folder of every installation. **FFmpeg** is not distributed with Kadr: it is downloaded on request from the
 official BtbN builds under the GNU GPL and runs as a separate program.
 

@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Publishes a Kadr release to the public binaries-only repository (default gitkalenyuk/kadr).
+  Publishes a Kadr release to the PRIVATE binaries-only repository (default gitkalenyuk/kadr-releases).
 
 .DESCRIPTION
   Given VERSION and the dist\<VERSION>\ folder produced by the installer team's release tool
@@ -13,12 +13,18 @@
        - latest.json.sig is a base64 Ed25519 signature (64 bytes) and, when the public key and OpenSSL are
          available, verifies against latest.json (exactly what the in-app updater will check)
     2. extracts the release notes for VERSION from CHANGELOG.md (or uses -NotesFile) and stamps the release date
-    3. refreshes the public repo content from the source tree: site\ (mirror), assets\logo.svg,
-       LICENSE (EULA), THIRD_PARTY_NOTICES.md, keys\update-signing.ed25519.pub
-    4. commits and pushes the release repo (git push origin main) -> GitHub Pages redeploys the site
+    3. refreshes the repo content from the source tree: assets\logo.svg, LICENSE (EULA),
+       THIRD_PARTY_NOTICES.md, keys\update-signing.ed25519.pub
+       (the website is NOT part of this repository any more: it lives in the public repo gitkalenyuk/kadr,
+       built from site\ of the source tree, and never links to downloads)
+    4. commits and pushes the release repo (git push origin main)
     5. creates the GitHub release vVERSION with all assets (gh release create), marked as pre-release when VERSION
        has a suffix such as -beta.1
-    6. prints the URLs
+    6. prints the URLs (visible only to people with access to the private repository)
+
+  Kadr 1.0 is distributed by invitation: the repository must stay PRIVATE. The script warns when it is public.
+  Installed copies update themselves only with a GitHub access token that can read this repository
+  (KADR_UPDATE_TOKEN or update.settings {"github_token": "..."}); everyone else gets installers from the vendor.
 
   Use -DryRun first: it runs every check and prints every command it would run, without changing anything.
 
@@ -29,11 +35,11 @@
   Folder with the built assets, normally <source repo>\dist\<VERSION>.
 
 .PARAMETER SourceRepo
-  The Kadr source tree (where site\, build\brand\, build\legal\ and internal\update\pubkey.go live).
+  The Kadr source tree (where build\brand\, build\legal\ and internal\update\pubkey.go live).
   Default: the parent folder of this release repo.
 
 .PARAMETER Repo
-  GitHub repository "owner/name". Default: gitkalenyuk/kadr.
+  GitHub repository "owner/name". Default: gitkalenyuk/kadr-releases (private).
 
 .PARAMETER NotesFile
   Markdown file to use as release notes instead of the CHANGELOG.md section.
@@ -49,17 +55,17 @@
   Only check and print what would be done.
 
 .EXAMPLE
-  .\scripts\publish.ps1 -Version 0.1.0-beta.1 -Dist ..\dist\0.1.0-beta.1 -DryRun
+  .\scripts\publish.ps1 -Version 1.0.0 -Dist ..\dist\1.0.0 -DryRun
 
 .EXAMPLE
-  .\scripts\publish.ps1 -Version 0.1.0-beta.1 -Dist C:\src\kadr\dist\0.1.0-beta.1
+  .\scripts\publish.ps1 -Version 1.0.0 -Dist C:\src\kadr\dist\1.0.0
 #>
 [CmdletBinding()]
 param(
   [Parameter(Mandatory = $true)][string]$Version,
   [Parameter(Mandatory = $true)][string]$Dist,
   [string]$SourceRepo = "",
-  [string]$Repo = "gitkalenyuk/kadr",
+  [string]$Repo = "gitkalenyuk/kadr-releases",
   [string]$NotesFile = "",
   [string]$PublicKey = "",
   [switch]$AllowMissingMedia,
@@ -137,7 +143,7 @@ $SourceRepo = (Resolve-Path -LiteralPath $SourceRepo).Path
 $Version = $Version.Trim()
 if ($Version.StartsWith("v")) { $Version = $Version.Substring(1) }
 if ($Version -notmatch '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$') {
-  Stop-Publish "VERSION '$Version' is not a semantic version like 0.1.0 or 0.1.0-beta.1 (build metadata '+...' is not allowed in tags)"
+  Stop-Publish "VERSION '$Version' is not a semantic version like 1.0.0 or 1.1.0-beta.1 (build metadata '+...' is not allowed in tags)"
 }
 $IsPrerelease = $Version.Contains("-")
 $Tag = "v$Version"
@@ -300,8 +306,9 @@ if ($NotesFile) {
   $StampChangelog = $lines[$start] -match 'Unreleased'
   Write-Ok "CHANGELOG.md section '$($lines[$start])' ($($body.Count) lines)"
 }
-$NotesText += "`n`n---`n`n**Downloads:** ``$Installer`` (installer, recommended) or ``$Portable`` (portable). " +
-  "Check them against ``SHA256SUMS.txt``. Installed copies of Kadr update themselves" +
+$NotesText += "`n`n---`n`n**Files:** ``$Installer`` (installer, recommended) or ``$Portable`` (portable). " +
+  "Check them against ``SHA256SUMS.txt``. Kadr is distributed by invitation: installed copies with a GitHub access token " +
+  "for this repository update themselves" +
   $(if ($IsPrerelease) { " when the **Beta** channel is selected (Settings $Arrow Updates)." } else { " (Settings $Arrow Updates)." }) + "`n"
 $Today = (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd")
 if ($StampChangelog) { Write-Info "the heading will be stamped: '## [$Version] - $Today'" }
@@ -347,6 +354,13 @@ if ($gh -and -not $DryRun) {
 } elseif ($DryRun) {
   Write-Host "    [dry-run] gh auth status; gh release view $Tag --repo $Repo (must not exist)" -ForegroundColor DarkGray
 }
+if ($gh) {
+  # Read-only: distribution is by invitation, so the release repository must be private.
+  $vis = Get-Native $gh @("repo", "view", $Repo, "--json", "visibility", "--jq", ".visibility")
+  if ($vis.Code -ne 0) { Add-Warn "could not read the visibility of $Repo (gh repo view): $($vis.Output)" }
+  elseif ($vis.Output -ne "PRIVATE") { Add-Warn "$Repo is $($vis.Output): Kadr is distributed by invitation, make it private (gh repo edit $Repo --visibility private --accept-visibility-change-consequences)" }
+  else { Write-Ok "$Repo is private" }
+}
 
 # README media referenced under assets/
 $readme = Read-Utf8 (Join-Path $RepoRoot "README.md")
@@ -365,22 +379,10 @@ if ($script:Errors.Count -gt 0) { Stop-Publish "README media missing (see FAIL l
 # ---------------------------------------------------------------------------------------------- 4. repo content
 
 Write-Step "Refreshing repository content from the source tree"
-$SiteSrc = Join-Path $SourceRepo "site"
-$SiteDst = Join-Path $RepoRoot "site"
-if (Test-Path -LiteralPath (Join-Path $SiteSrc "index.html")) {
-  $n = (Get-ChildItem -LiteralPath $SiteSrc -Recurse -File).Count
-  if ($DryRun) { Write-Host "    [dry-run] mirror $SiteSrc -> $SiteDst ($n files)" -ForegroundColor DarkGray }
-  else {
-    if (Test-Path -LiteralPath $SiteDst) { Get-ChildItem -LiteralPath $SiteDst -Force | Remove-Item -Recurse -Force }
-    else { New-Item -ItemType Directory -Path $SiteDst | Out-Null }
-    Copy-Item -Path (Join-Path $SiteSrc "*") -Destination $SiteDst -Recurse -Force
-    Write-Ok "site mirrored ($n files)"
-  }
-} elseif (Test-Path -LiteralPath (Join-Path $SiteDst "index.html")) {
-  Add-Warn "no site\index.html in the source tree; keeping the existing site\ of the release repo"
-} else {
-  Add-Err "no website: neither $SiteSrc nor $SiteDst contains index.html (the Pages workflow would fail)"
-}
+# The website is published from the separate public repository gitkalenyuk/kadr (site-repo\ of the source
+# tree), never from here: a site\ folder or a Pages workflow in this private repo is a leftover.
+if (Test-Path -LiteralPath (Join-Path $RepoRoot "site")) { Add-Warn "site\ still exists in the release repo: the website now lives in gitkalenyuk/kadr; delete site\ here" }
+if (Test-Path -LiteralPath (Join-Path $RepoRoot ".github\workflows\pages.yml")) { Add-Warn ".github\workflows\pages.yml still exists: delete it (no Pages from the private release repo)" }
 
 # Single files: source path -> destination path (relative to the release repo)
 $copies = @(
@@ -455,16 +457,16 @@ Invoke-Native $ghExe $relArgs
 # ---------------------------------------------------------------------------------------------- 6. summary
 
 Write-Step "URLs"
-Write-Info "Release:        $ReleaseBase/tag/$Tag"
+Write-Info "Release:        $ReleaseBase/tag/$Tag   (private: only people with access can open it)"
 Write-Info "Installer:      $ReleaseBase/download/$Tag/$Installer"
 Write-Info "Portable:       $ReleaseBase/download/$Tag/$Portable"
 Write-Info "Manifest:       $ReleaseBase/download/$Tag/latest.json"
 if ($IsPrerelease) {
-  Write-Info "Updater:        pre-release -> offered to the Beta channel (GitHub API releases list)"
+  Write-Info "Updater:        pre-release -> offered to the Beta channel (GitHub API releases list, with an access token)"
 } else {
-  Write-Info "Updater:        $ReleaseBase/latest/download/latest.json"
+  Write-Info "Updater:        GitHub API /repos/$Repo/releases/latest (with an access token)"
 }
-Write-Info "Website:        https://$($Owner.ToLowerInvariant()).github.io/$RepoName/  (Pages deploy: https://github.com/$Repo/actions)"
+Write-Info "Share:          send the installer to invited users yourself; the website has no download links"
 Write-Info "Repository:     https://github.com/$Repo"
 
 if ($script:Warnings.Count -gt 0) {

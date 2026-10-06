@@ -36,5 +36,3 @@
 *.zip   binary
 *.exe   binary
 
-# The prebuilt website is documentation, not source code: keep it out of GitHub's language statistics.
-site/** linguist-documentation
