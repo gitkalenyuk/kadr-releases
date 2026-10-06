@@ -5,6 +5,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 [Semantic Versioning](https://semver.org/). Versions with a suffix such as `-beta.1` are pre-releases and are
 delivered through the **Beta** update channel.
 
+## [0.1.0-beta.4] - 2026-10-06
+
+Export is about four times faster, and two annoying errors are gone.
+
+### Faster
+
+- **Export up to ~4× faster.** A 29-minute 1080p photo documentary with colour filters, grain and Ken Burns moves
+  now exports at ~45 frames per second instead of ~12. Colour filters, grain and blending run several times faster,
+  big photos are resized once instead of every frame, the blurred background behind a photo is built once per clip,
+  and Kadr now uses all your processor cores while exporting.
+- **Video clips decode on the graphics card** (NVIDIA, Intel or AMD) when exporting HD and 4K footage, with an
+  automatic fallback to the processor. Set `KADR_HWDEC=0` to turn it off.
+
+### Fixed
+
+- Saving a project could fail with "Access is denied" on Windows when another program briefly held the project file.
+- Installing a font right after starting Kadr could fail with "The system cannot find the path specified".
+
 ## [0.1.0-beta.3] - 2026-10-02
 
 A much bigger library — several times more transitions, effects, filters, animations, text looks, stickers and
