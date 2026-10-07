@@ -67,6 +67,9 @@ Hand out installers yourself (the release assets, or a link from the private Rel
 
 ## 2. The public website repository `gitkalenyuk/kadr`
 
+**Done 2026-10-07:** the repository was created from `site-repo\`, GitHub Pages is enabled with `build_type=workflow`
+and serves https://gitkalenyuk.github.io/kadr/. What is left here is the routine refresh below.
+
 `site-repo\` contains only the built site (copied from `site\` after `node site/tools/build.mjs`), a README and
 `.github/workflows/pages.yml` (deploys the repository root to GitHub Pages on every push to `main`).
 
@@ -81,7 +84,8 @@ git -C site-repo commit -m "Update website"
 git -C site-repo push origin main          # only after the owner said so
 ```
 
-One-time creation (only with the owner's go-ahead; skip what already exists):
+One-time creation (**done 2026-10-07** — kept for reference, e.g. to recreate the repository; only with the owner's
+go-ahead, skip what already exists):
 
 ```powershell
 gh repo create gitkalenyuk/kadr --public --description "Kadr — AI-native video editor (website)" `
