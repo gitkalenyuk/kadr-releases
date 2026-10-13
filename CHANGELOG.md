@@ -5,6 +5,65 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 [Semantic Versioning](https://semver.org/). Versions with a suffix such as `-beta.1` are pre-releases and are
 delivered through the **Beta** update channel.
 
+## [1.1.0-beta.1] - 2026-10-13
+
+The biggest update since 1.0: motion-graphics templates with a layer editor, a built-in AI assistant that edits for
+you, voices and AI video from dozens of providers, a footage finder, local analysis of beats, shots and faces — and,
+from this version on, **Kadr is activated with a personal code**.
+
+### Activation (read this first)
+
+- **Kadr now needs an activation code.** On the first start after this update Kadr shows an activation screen: type
+  the code you received from the owner of Kadr (`KADR-XXXX-XXXX-XXXX`) and Kadr unlocks at once. A code works on one PC.
+  Your projects stay on your computer and are never touched — without a valid licence Kadr simply does not open them.
+- **Access for a set time.** Your access may have an end date; the title bar shows a badge in the last three days and
+  Settings → Licence shows the details (until when, which features, this PC's id). Ask the owner to extend it.
+- **Works offline for three days.** Kadr checks your access in the background when it starts and every few hours. It
+  keeps working without internet until its last check is three days old.
+- **The owner can close access at any time** — an online Kadr stops within a second; projects stay on disk.
+- `kadrctl`, `kadr-mcp`, the REST API and the built-in assistant obey the same licence. `license.status` tells why
+  Kadr is locked; activation is done by you, never by AI agents.
+
+### New
+
+- **Motion graphics.** 690 ready templates in 18 graphic systems — titles, lower thirds, captions, call-outs, counters,
+  charts, maps, social cards, transitions and overlays — each one a single clip on the timeline with its own fields,
+  media slots, layouts for 16:9, 9:16, 1:1 and 4:5, and sound cues. A layer editor (keyframes, easing curves, solo,
+  per-ratio layouts) opens in place of the timeline; project styles and brand kits restyle every template at once.
+  Import your own templates from DaVinci Resolve / Fusion (`.setting`, `.comp`, `.drfx`) and Lottie, or let the
+  template finder look for free ones online.
+- **Animated maps** — offline, with historical borders from 3400 BC to today, towns, rivers and lakes, routes, pins and
+  a camera that flies between places.
+- **Text animator.** Per-letter, per-word and per-line animations with full control over timing and easing.
+- **A modern library.** 40 new transitions, 39 effects and 45 clip animations; dated items are hidden from the library
+  (your old projects still render exactly as before). New 4:5 canvas.
+- **Built-in AI assistant** (the "AI" button, Ctrl+Shift+A). Chat with Claude Code, Codex, Gemini CLI and a dozen other
+  agents, or with Anthropic, OpenAI, Gemini and other APIs, and it edits your project like a person would — every step
+  undoable, a checkpoint to revert the whole chat. It follows an editing playbook, checks its own work (`qa.check`
+  looks at real frames), assembles rough cuts on the beat, renders thumbnails and remembers your channel profiles.
+  Choose how much it may do alone (up to Full auto), dictate with the microphone, continue long tasks, use your own
+  API endpoints for Claude Code, and pick models, advisor and effort.
+- **Voices and AI video from many providers.** 39 voice providers (ElevenLabs, OpenAI, Azure, Google, Edge read-aloud
+  and more, plus local engines) and 37 AI video providers with about 1,900 models. Re-voice a clip with one click in
+  Inspector → Speech; captions follow.
+- **Speech to text** for dictation and transcription: local Whisper or 15 cloud services.
+- **Footage finder.** Search 48 free and stock sources, preview, download and import in one step; Kadr writes a
+  credits file next to every export that needs one.
+- **Local analysis** on this PC, free: beats and downbeats, shot boundaries, faces and text-to-picture relevance
+  (models download on demand).
+- **Keys stay safe.** API keys live in an encrypted vault (Windows protects it for your account), several keys per
+  provider with automatic failover, and a daily spending limit with a ledger of every paid call.
+- **Sound.** Every mix ends in a true-peak limiter, and export can normalise loudness (e.g. −14 LUFS for YouTube).
+- WebM clips with transparency (VP8/VP9 alpha) keep their alpha.
+
+### Fixed
+
+- An export that ran out of video memory now goes back to the graphics card instead of finishing on the processor.
+- A rare graphics-driver hang on very complex graphics: Kadr now splits heavy GPU work, watches the driver and falls
+  back to the processor instead of freezing.
+- FFmpeg installed with Scoop is found and started correctly.
+- Home shows a real frame of each project on its card.
+
 ## [1.0.0] - 2026-10-06
 
 Kadr is out of beta. Everything you see — every clip, photo, filter, effect, transition, animation and title — is now
