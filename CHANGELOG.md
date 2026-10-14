@@ -5,6 +5,18 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 [Semantic Versioning](https://semver.org/). Versions with a suffix such as `-beta.1` are pre-releases and are
 delivered through the **Beta** update channel.
 
+## [1.1.0-beta.3] - 2026-10-14
+
+### New
+
+- **Updates without an access token.** "Check for updates" now works for everyone with an active Kadr licence: Kadr
+  asks the licence server, which hands out the signed release — no GitHub token needed. Kadr still checks the
+  signature of every update itself. (Install this version once by hand; after that the update button just works.)
+- **macOS updates itself.** Kadr for Mac downloads the new version, checks it, swaps Kadr.app after it quits and opens
+  again — no more dragging a new DMG into Applications.
+- Everything from 1.1.0-beta.2 (12 interface languages, Parakeet speech recognition, smooth timeline playback,
+  My voices, OpenSpeaker, the AI chat brief, 27 channel profiles, Epidemic Sound and your music library, referrals).
+
 ## [1.1.0-beta.2] - 2026-10-14
 
 Kadr now speaks your language, plays the timeline smoothly, recognises speech faster and more accurately, and the AI
