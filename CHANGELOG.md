@@ -5,6 +5,51 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 [Semantic Versioning](https://semver.org/). Versions with a suffix such as `-beta.1` are pre-releases and are
 delivered through the **Beta** update channel.
 
+## [1.1.0-beta.2] - 2026-10-14
+
+Kadr now speaks your language, plays the timeline smoothly, recognises speech faster and more accurately, and the AI
+assistant is easier to steer and to switch.
+
+### New
+
+- **Interface in 12 languages**: English, Ukrainian, German, French, Spanish, Italian, Portuguese (Brazil), Polish,
+  Dutch, Czech, Romanian and Swedish. Kadr starts in your system's language; change it in Settings → Language (the
+  window reloads and your project stays open). Names of library items and messages from the engine are still English.
+- **Parakeet speech recognition.** A new local model (NVIDIA Parakeet TDT 0.6B v3, 25 European languages incl.
+  Ukrainian, ~640 MB, downloaded on demand in Settings → Speech to text) for captions, transcripts and dictation.
+  On real Ukrainian speech it made fewer mistakes than Whisper large-v3 and runs faster — on the processor, no NVIDIA
+  card or Python needed. Once installed it is used automatically for its languages; Whisper stays for the others.
+- **My voices.** Voices you designed or cloned at your provider (MiniMax, ElevenLabs, Cartesia, Fish Audio, Speechify,
+  Inworld) appear on their own under "My voices", and **Add voice by ID** works for every provider — the voice shows
+  up in every voice menu and for the AI assistant. MiniMax keys from mainland China are detected automatically.
+- **OpenSpeaker voices.** A new voice provider: one key for ElevenLabs, MiniMax, Edge, Kokoro, Vbee and Fish Audio
+  voices plus your clones; also usable for speech to text (experimental).
+- **Connect a voice provider** — a three-step guide (get the key → paste → free check) from every voice menu.
+- **AI chat brief.** A new chat shows a Brief row: format (16:9, 9:16, 1:1, 4:5 …), voice, language, templates (use
+  existing / create new / find online), captions, music and length. Kadr sets the format before the assistant starts;
+  the rest guides the assistant for the whole chat.
+- **Connect an AI** — ChatGPT (Codex), Claude, Gemini, an API key or your own endpoint, step by step from the model
+  picker. When an AI hits its usage limit, the chat says so in plain words and offers "Switch to …" to continue the
+  same request with another AI.
+- **27 built-in channel profiles** (true crime, history, fairy tales, horror, science, news, tech reviews, podcast clips,
+  gaming, sports, travel, cooking, fitness, beauty, product ads, weddings …) with detailed editing rules for the
+  assistant — graphic system, captions, pacing, format, transitions, music; use one as is or duplicate and edit it.
+- **Music: Epidemic Sound and your own library.** Library → Audio → Music searches your Epidemic Sound subscription
+  (paste a key from epidemicsound.com → Account → API keys in Settings → Music), adds tracks or just their
+  instruments / drums / bass stems under narration, and credits them after export. Add folders of tracks you already
+  downloaded and Kadr indexes them (tags, length, BPM on request). The AI assistant picks music from both.
+- **Referral programme.** Settings → Licence shows your referral code; every friend who activates Kadr with it adds
+  days to your access (and gives them a welcome bonus).
+- The chat panel is wider and can be resized; the message box is taller.
+- Custom AI providers: **Load models** fetches the model list from your server; model ids are no longer required.
+
+### Fixed
+
+- **Timeline playback**: sound played as garbled noise — it is now clean and in sync. Clicking the ruler shows the
+  frame almost at once, dragging the playhead shows frames while you drag, and playback no longer stutters on archive
+  footage inside templates.
+- Export: the folder button opens a folder picker.
+
 ## [1.1.0-beta.1] - 2026-10-13
 
 The biggest update since 1.0: motion-graphics templates with a layer editor, a built-in AI assistant that edits for
