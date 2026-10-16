@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Publishes a Kadr release to the PRIVATE binaries-only repository (default gitkalenyuk/kadr-releases).
-# Kadr 1.0 is distributed by invitation: the repository must stay private (the script warns when it is
-# public), and the website (public repo gitkalenyuk/kadr) has no download links.
+# Publishes a Kadr release to the public binaries-only repository (default gitkalenyuk/kadr-releases).
+# The repository is public since 2026-10-16 (updates need no token): every build from 1.1.0-beta.1 on is
+# locked by the licence, so versions before it are refused. The website (gitkalenyuk/kadr) has no download links.
 #
 # Usage:
 #   scripts/publish.sh [options] VERSION DIST
@@ -13,7 +13,7 @@
 #   --dry-run               run every check and print every command, change nothing
 #   --source DIR            Kadr source tree (build/brand/, build/legal/, internal/update/pubkey.go);
 #                           default: the parent folder of this release repo
-#   --repo OWNER/NAME       GitHub repository (default gitkalenyuk/kadr-releases, private)
+#   --repo OWNER/NAME       GitHub repository (default gitkalenyuk/kadr-releases, public)
 #   --notes-file FILE       release notes instead of the CHANGELOG.md section
 #   --public-key BASE64     Ed25519 public key to verify latest.json.sig (default: from internal/update/pubkey.go,
 #                           else keys/update-signing.ed25519.pub)
@@ -26,7 +26,7 @@
 #      (with OpenSSL 3 when the public key is known)
 #   2. release notes from CHANGELOG.md "## [VERSION]" (the "Unreleased" heading is stamped with today's date)
 #   3. preflight: own git repo on main with an origin remote, gh logged in, release does not exist yet,
-#      the repository is private
+#      the repository is public
 #   4. refresh assets/logo.svg, LICENSE, THIRD_PARTY_NOTICES.md, keys/update-signing.ed25519.pub
 #      (no website here any more: it is published from gitkalenyuk/kadr)
 #   5. git commit + git push origin main; gh release create vVERSION <assets> (+ --prerelease for -suffix versions)
@@ -67,6 +67,10 @@ done
 if [ ${#POSITIONAL[@]} -ne 2 ]; then usage >&2; exit 2; fi
 VERSION="${POSITIONAL[0]#v}"
 DIST="${POSITIONAL[1]}"
+case "$VERSION" in
+  0.*|1.0.*) printf 'ERROR: VERSION %s predates the licence lock (1.1.0-beta.1): the release repository is public, and a build without the lock must never be published there
+' "$VERSION" >&2; exit 1 ;;
+esac
 
 # ---------------------------------------------------------------------------------------------- helpers
 
@@ -332,10 +336,10 @@ else
   ok "release $TAG does not exist yet"
 fi
 if have gh; then
-  # Read-only: distribution is by invitation, so the release repository must be private.
+  # Read-only: the release repository is public since 2026-10-16 (builds are locked by the licence).
   if vis="$(gh repo view "$REPO" --json visibility --jq .visibility 2>&1)"; then
-    if [ "$vis" = PRIVATE ]; then ok "$REPO is private"
-    else warn "$REPO is $vis: Kadr is distributed by invitation, make it private (gh repo edit $REPO --visibility private --accept-visibility-change-consequences)"; fi
+    if [ "$vis" = PUBLIC ]; then ok "$REPO is public"
+    else warn "$REPO is $vis: copies without a GitHub token can then update only through the licence server (GITHUB_RELEASES_TOKEN); it is meant to be public"; fi
   else warn "could not read the visibility of $REPO (gh repo view): $vis"; fi
 fi
 
@@ -357,9 +361,9 @@ else ok "all README media present ($count)"; fi
 
 step "Refreshing repository content from the source tree"
 # The website is published from the separate public repository gitkalenyuk/kadr (site-repo/ of the source
-# tree), never from here: a site/ folder or a Pages workflow in this private repo is a leftover.
+# tree), never from here: a site/ folder or a Pages workflow in this release repo is a leftover.
 [ -e "$ROOT/site" ] && warn "site/ still exists in the release repo: the website now lives in gitkalenyuk/kadr; delete site/ here"
-[ -e "$ROOT/.github/workflows/pages.yml" ] && warn ".github/workflows/pages.yml still exists: delete it (no Pages from the private release repo)"
+[ -e "$ROOT/.github/workflows/pages.yml" ] && warn ".github/workflows/pages.yml still exists: delete it (no Pages from the release repo)"
 
 copy_file() { # src dst kind
   local src="$1" dst="$ROOT/$2" kind="$3"
@@ -426,7 +430,7 @@ run "${rel[@]}"
 # ---------------------------------------------------------------------------------------------- 6. summary
 
 step "URLs"
-info "Release:        $RELEASES/tag/$TAG   (private: only people with access can open it)"
+info "Release:        $RELEASES/tag/$TAG"
 info "Installer:      $RELEASES/download/$TAG/$INSTALLER"
 info "Portable:       $RELEASES/download/$TAG/$PORTABLE"
 info "Manifest:       $RELEASES/download/$TAG/latest.json"

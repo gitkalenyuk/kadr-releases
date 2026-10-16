@@ -1,10 +1,13 @@
 # Repository layout and runbook (Kadr 1.0, distribution by invitation)
 
-Since 1.0 Kadr is shared **by invitation**. Two GitHub repositories are involved, and neither contains source code:
+Since 1.0 Kadr is shared **by invitation**. Two GitHub repositories are involved, and neither contains source code.
+Since 2026-10-16 both are public (owner's decision): every build from 1.1.0-beta.1 on is locked by the licence, so an
+installer is useless without a personal activation code; the pre-lock releases 0.1.0-beta.1…4 and 1.0.0 were deleted
+from GitHub (releases + tags; local copies stay in `dist\`).
 
 | Repository | Visibility | Local folder (inside the source tree) | Holds |
 |---|---|---|---|
-| `gitkalenyuk/kadr-releases` | **private** | `release-repo\` (its own git repo) | Releases with the installers, `latest.json(.sig)`, README, CHANGELOG, LICENSE, notices, the update public key, issue forms |
+| `gitkalenyuk/kadr-releases` | **public** (since 2026-10-16) | `release-repo\` (its own git repo) | Releases with the installers, `latest.json(.sig)`, README, CHANGELOG, LICENSE, notices, the update public key, issue forms |
 | `gitkalenyuk/kadr` | public | `site-repo\` (its own git repo) | Only the built website (docs for people and AI agents, **no download links**) and its Pages workflow |
 
 Both folders are ignored by the source repository (`/release-repo/` and `/site-repo/` in its `.gitignore`).
@@ -26,18 +29,19 @@ git -C release-repo status           # must be clean
 Back up the update-signing key: `%APPDATA%\Kadr-release\signing.key`. Without it you can never ship an update that
 installed copies accept. Store it offline, in a password manager or on an encrypted drive, never in a repository.
 
-## 1. The private release repository `gitkalenyuk/kadr-releases`
+## 1. The release repository `gitkalenyuk/kadr-releases`
 
-It was renamed from the former public `gitkalenyuk/kadr` and made private. Check:
+It was renamed from the former public `gitkalenyuk/kadr`, made private for 1.0 and made public again on 2026-10-16.
+Check:
 
 ```powershell
-gh repo view gitkalenyuk/kadr-releases --json visibility,url    # visibility must be PRIVATE
+gh repo view gitkalenyuk/kadr-releases --json visibility,url    # visibility must be PUBLIC
 git -C release-repo remote get-url origin                       # https://github.com/gitkalenyuk/kadr-releases.git
 ```
 
 The website no longer lives here. The 1.0 working tree already deleted `site/` and `.github/workflows/pages.yml`;
 the next `publish` commits that (`git add -A`). The publish scripts warn if they ever come back. Also stop Pages on
-the private repository if it is still enabled:
+the release repository if it is still enabled:
 
 ```powershell
 gh api repos/gitkalenyuk/kadr-releases/pages --silent && gh api -X DELETE repos/gitkalenyuk/kadr-releases/pages
@@ -53,17 +57,12 @@ gh api repos/gitkalenyuk/kadr-releases/pages --silent && gh api -X DELETE repos/
 
 ### Giving someone access to updates
 
-Installed copies update themselves only with a GitHub token that can read this repository:
+Nothing to hand out: installed copies find updates in this public repository without a token (*Settings →
+Updates*). What gates use is the licence: give the person a personal activation code. A GitHub token (`update.settings
+--github_token`, `KADR_UPDATE_TOKEN`) is optional and still wins when set. Builds 1.1.0-beta.1…3 ask the licence
+server first; it reads the public pages too once the Worker is deployed (`docs/design/licensing-todo.md` U2).
 
-1. Invite the person as a collaborator (*Settings → Collaborators*, role **Read**), or keep the repository to
-   yourself and create a token for them.
-2. They (or you, for them) create a **fine-grained personal access token**: *Repository access → Only select
-   repositories → gitkalenyuk/kadr-releases*, *Permissions → Contents: Read-only*, an expiry date.
-3. In Kadr: *Settings → Updates* (or `kadrctl run update.settings --github_token "github_pat_..."`, or the
-   `KADR_UPDATE_TOKEN` environment variable). Without a token, Kadr reports "private update channel: ask the vendor
-   for the latest installer" and never nags.
-
-Hand out installers yourself (the release assets, or a link from the private Releases page for collaborators).
+Installers may be linked from the Releases page or handed out directly; the website still has no download links.
 
 ## 2. The public website repository `gitkalenyuk/kadr`
 
@@ -100,35 +99,37 @@ Check that `https://gitkalenyuk.github.io/kadr/` answers 200 and has no download
 (`curl.exe -s https://gitkalenyuk.github.io/kadr/ | Select-String -Pattern "releases|\.exe|\.zip|latest\.json"`
 must print nothing).
 
-## 3. Publish a release (private)
+## 3. Publish a release (public repo, licence-locked builds only)
 
-Build with the release tool (`wails3 task release VERSION=1.0.0`, i.e. `go run ./cmd/releasetool all --version
-1.0.0`). It writes `dist\1.0.0\` with the installer (which now ships `wgpu_native.dll` and the app-local `vcruntime140.dll` it needs), the portable zip,
+Build with the release tool (`wails3 task release VERSION=1.1.0`, i.e. `go run ./cmd/releasetool all --version
+1.1.0`). It writes `dist\1.1.0\` with the installer (which now ships `wgpu_native.dll` and the app-local `vcruntime140.dll` it needs), the portable zip,
 `SHA256SUMS.txt`, `latest.json`, `latest.json.sig` and `notes.md`. Smoke-test it (works even with Kadr installed):
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File scripts\release\smoke-test.ps1 -Version 1.0.0
+powershell -ExecutionPolicy Bypass -File scripts\release\smoke-test.ps1 -Version 1.1.0
 ```
 
 Then:
 
 ```powershell
 cd release-repo
-.\scripts\publish.ps1 -Version 1.0.0 -Dist ..\dist\1.0.0 -DryRun   # read every line, fix every FAIL/WARN
-.\scripts\publish.ps1 -Version 1.0.0 -Dist ..\dist\1.0.0
+.\scripts\publish.ps1 -Version 1.1.0 -Dist ..\dist\1.1.0 -DryRun   # read every line, fix every FAIL/WARN
+.\scripts\publish.ps1 -Version 1.1.0 -Dist ..\dist\1.1.0
 ```
 
-From Git Bash: `scripts/publish.sh --dry-run 1.0.0 ../dist/1.0.0`, then the same without `--dry-run`.
+From Git Bash: `scripts/publish.sh --dry-run 1.1.0 ../dist/1.1.0`, then the same without `--dry-run`.
 
-`publish` verifies the assets and the Ed25519 signature, warns if the repository is not private, stamps the
-`CHANGELOG.md` date, commits, runs `git push origin main` and `gh release create v1.0.0 … --latest`, then prints the
+`publish` refuses pre-lock versions (0.* and 1.0.*; the examples use 1.1.0), verifies the assets and the Ed25519
+signature, warns if the repository is NOT public, stamps the
+`CHANGELOG.md` date, commits, runs `git push origin main` and `gh release create v1.1.0 … --latest`, then prints the
 URLs.
 
 ## 4. Check after publishing
 
-- [ ] The release page (private) shows **Latest** with 5 assets, and the notes render correctly.
-- [ ] A copy **without** a token: *Settings → Updates → Check now* says the channel is private; no error badge.
-- [ ] A copy **with** a token on 0.1.0-beta.x or an older 1.0 build finds, downloads, verifies and installs the update.
+- [ ] The release page (public) shows **Latest** with 5 assets, and the notes render correctly.
+- [ ] A copy **without** a token finds the update through the public repo (*Settings → Updates → Check now*),
+      downloads, verifies and installs it; no error badge.
+- [ ] Logged out of GitHub, the release page and its assets open (the repository really is public).
 - [ ] `https://gitkalenyuk.github.io/kadr/` shows "Kadr is available by invitation." and no download links.
 
 ## Later releases
@@ -138,5 +139,5 @@ URLs.
 2. `wails3 task release VERSION=X.Y.Z`, then the smoke test.
 3. `.\scripts\publish.ps1 -Version X.Y.Z -Dist ..\dist\X.Y.Z -DryRun`, then without `-DryRun`.
 
-Final versions (no `-suffix`) are marked **Latest** and are what the stable channel finds through the GitHub API
-(`/repos/gitkalenyuk/kadr-releases/releases/latest`).
+Final versions (no `-suffix`) are marked **Latest** and are what the stable channel finds through the public
+download URLs (`https://github.com/gitkalenyuk/kadr-releases/releases/latest/download/latest.json`).

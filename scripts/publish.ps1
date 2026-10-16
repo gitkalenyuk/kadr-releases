@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Publishes a Kadr release to the PRIVATE binaries-only repository (default gitkalenyuk/kadr-releases).
+  Publishes a Kadr release to the public binaries-only repository (default gitkalenyuk/kadr-releases).
 
 .DESCRIPTION
   Given VERSION and the dist\<VERSION>\ folder produced by the installer team's release tool
@@ -20,9 +20,12 @@
     4. commits and pushes the release repo (git push origin main)
     5. creates the GitHub release vVERSION with all assets (gh release create), marked as pre-release when VERSION
        has a suffix such as -beta.1
-    6. prints the URLs (visible only to people with access to the private repository)
+    6. prints the URLs
 
-  Kadr 1.0 is distributed by invitation: the repository must stay PRIVATE. The script warns when it is public.
+  The repository is PUBLIC since 2026-10-16 (updates need no token): every build from 1.1.0-beta.1 on is locked
+  by the licence (activation code), so the installers are useless without one. Versions before 1.1.0-beta.1
+  have no lock and are refused. The script warns when the repository is private (copies without a token could
+  then update only through the licence server).
   Installed copies update themselves only with a GitHub access token that can read this repository
   (KADR_UPDATE_TOKEN or update.settings {"github_token": "..."}); everyone else gets installers from the vendor.
 
@@ -39,7 +42,7 @@
   Default: the parent folder of this release repo.
 
 .PARAMETER Repo
-  GitHub repository "owner/name". Default: gitkalenyuk/kadr-releases (private).
+  GitHub repository "owner/name". Default: gitkalenyuk/kadr-releases (public).
 
 .PARAMETER NotesFile
   Markdown file to use as release notes instead of the CHANGELOG.md section.
@@ -142,6 +145,9 @@ $SourceRepo = (Resolve-Path -LiteralPath $SourceRepo).Path
 
 $Version = $Version.Trim()
 if ($Version.StartsWith("v")) { $Version = $Version.Substring(1) }
+if ($Version -match '^(0\.|1\.0\.)') {
+  Stop-Publish "VERSION '$Version' predates the licence lock (1.1.0-beta.1): the release repository is public, and a build without the lock must never be published there"
+}
 if ($Version -notmatch '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$') {
   Stop-Publish "VERSION '$Version' is not a semantic version like 1.0.0 or 1.1.0-beta.1 (build metadata '+...' is not allowed in tags)"
 }
@@ -355,11 +361,11 @@ if ($gh -and -not $DryRun) {
   Write-Host "    [dry-run] gh auth status; gh release view $Tag --repo $Repo (must not exist)" -ForegroundColor DarkGray
 }
 if ($gh) {
-  # Read-only: distribution is by invitation, so the release repository must be private.
+  # Read-only: the release repository is public since 2026-10-16 (builds are locked by the licence).
   $vis = Get-Native $gh @("repo", "view", $Repo, "--json", "visibility", "--jq", ".visibility")
   if ($vis.Code -ne 0) { Add-Warn "could not read the visibility of $Repo (gh repo view): $($vis.Output)" }
-  elseif ($vis.Output -ne "PRIVATE") { Add-Warn "$Repo is $($vis.Output): Kadr is distributed by invitation, make it private (gh repo edit $Repo --visibility private --accept-visibility-change-consequences)" }
-  else { Write-Ok "$Repo is private" }
+  elseif ($vis.Output -ne "PUBLIC") { Add-Warn "$Repo is $($vis.Output): copies without a GitHub token can then update only through the licence server (GITHUB_RELEASES_TOKEN); it is meant to be public" }
+  else { Write-Ok "$Repo is public" }
 }
 
 # README media referenced under assets/
@@ -380,9 +386,9 @@ if ($script:Errors.Count -gt 0) { Stop-Publish "README media missing (see FAIL l
 
 Write-Step "Refreshing repository content from the source tree"
 # The website is published from the separate public repository gitkalenyuk/kadr (site-repo\ of the source
-# tree), never from here: a site\ folder or a Pages workflow in this private repo is a leftover.
+# tree), never from here: a site\ folder or a Pages workflow in this release repo is a leftover.
 if (Test-Path -LiteralPath (Join-Path $RepoRoot "site")) { Add-Warn "site\ still exists in the release repo: the website now lives in gitkalenyuk/kadr; delete site\ here" }
-if (Test-Path -LiteralPath (Join-Path $RepoRoot ".github\workflows\pages.yml")) { Add-Warn ".github\workflows\pages.yml still exists: delete it (no Pages from the private release repo)" }
+if (Test-Path -LiteralPath (Join-Path $RepoRoot ".github\workflows\pages.yml")) { Add-Warn ".github\workflows\pages.yml still exists: delete it (no Pages from the release repo)" }
 
 # Single files: source path -> destination path (relative to the release repo)
 $copies = @(
@@ -457,7 +463,7 @@ Invoke-Native $ghExe $relArgs
 # ---------------------------------------------------------------------------------------------- 6. summary
 
 Write-Step "URLs"
-Write-Info "Release:        $ReleaseBase/tag/$Tag   (private: only people with access can open it)"
+Write-Info "Release:        $ReleaseBase/tag/$Tag"
 Write-Info "Installer:      $ReleaseBase/download/$Tag/$Installer"
 Write-Info "Portable:       $ReleaseBase/download/$Tag/$Portable"
 Write-Info "Manifest:       $ReleaseBase/download/$Tag/latest.json"

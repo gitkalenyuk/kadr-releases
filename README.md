@@ -50,10 +50,10 @@
 </p>
 
 > [!NOTE]
-> **Kadr 1.0 is distributed by invitation.** This private repository holds the releases (installers are attached to
-> its Releases, visible only to people with access), the changelog and the licence texts. The public
-> [website](https://gitkalenyuk.github.io/kadr/) keeps the documentation for people and AI agents but offers no
-> downloads: get the installer from the person who invited you. Kadr is closed-source freeware.
+> **Kadr is distributed by invitation.** This repository holds the releases (installers are attached to its
+> Releases), the changelog and the licence texts. Downloading is open, but Kadr works only after activation with a
+> personal code from the owner. The [website](https://gitkalenyuk.github.io/kadr/) keeps the documentation for people
+> and AI agents but offers no downloads. Kadr is closed-source freeware.
 
 ## Why Kadr
 
@@ -109,7 +109,7 @@ No CapCut assets.
 
 **Safe updates**
 
-Updates come from this private repository (with an access token from the vendor) and install only when an
+Updates are found automatically in this repository (no token needed) and install only when an
 **Ed25519 signature** and the installer's **SHA-256** both check out. Skip a version, or switch checks off.
 
 </td>
@@ -283,14 +283,15 @@ Everything is **original**: generated or rendered by Kadr's own engine.
 
 ## Install
 
-Kadr is shared **by invitation**: you get the installer from the person who invited you (or, if you have access to
-this private repository, from its Releases). The website has no download links.
+Kadr is shared **by invitation**: download the installer from this repository's Releases (or get it from the person
+who invited you); it works only after activation with a personal code from the owner. The website has no download
+links.
 
 ### Windows
 
 | File | For |
 |---|---|
-| **`Kadr-Setup-<version>-x64.exe`** | Recommended. Per-user install, no administrator rights, automatic updates (with an access token) |
+| **`Kadr-Setup-<version>-x64.exe`** | Recommended. Per-user install, no administrator rights, automatic updates |
 | `Kadr-<version>-windows-x64-portable.zip` | Run from any folder or USB drive; tells you about updates but does not install them |
 
 1. Run the installer. It installs to `%LOCALAPPDATA%\Programs\Kadr` (an all-users install is optional). Optional
@@ -343,19 +344,10 @@ automatic updates. Ask the vendor for it when it is ready.
 
 ### Automatic updates
 
-Releases live in this **private** repository, so a copy of Kadr can only see them with a GitHub access token from
-the vendor (a fine-grained token with read-only *Contents* access to `gitkalenyuk/kadr-releases`). Save it once:
+Kadr finds updates automatically in this repository (**Settings → Updates**); no token or setup is needed. An
+activated copy can also get them through its Kadr licence if GitHub can't be reached.
 
-```powershell
-kadrctl run update.settings --github_token "github_pat_..."     # or Settings -> Updates
-# or set the KADR_UPDATE_TOKEN environment variable (it wins over the saved token)
-```
-
-The token is stored in `%APPDATA%\Kadr\settings.json` (key `update.github_token`), sent only to the GitHub API and
-never shown again (`update.settings` reports just `github_token_set`). Without a token, **Check now** simply says
-*private update channel: ask the vendor for the latest installer*, and the background check stays silent.
-
-With access, Kadr checks in the background at most once a day (or when you click **Settings → Updates → Check
+Kadr checks in the background at most once a day (or when you click **Settings → Updates → Check
 now**). Every release carries a manifest, `latest.json`, signed with Ed25519 (`latest.json.sig`); the public key is
 built into Kadr. An update installs only if **the signature is valid and the installer's SHA-256 matches**, then
 Kadr upgrades in place, keeps your projects and restarts. **Stable** (the default) gets final releases, **Beta** also
@@ -535,8 +527,7 @@ Optional extras, detected at run time (Kadr tells you how to enable anything mis
 - **Your media stays on your computer.** Kadr does not upload, sync or analyse your files anywhere else; every AI
   tool runs locally.
 - **No account, no telemetry, no analytics, no ads.**
-- **Network access** is limited to the update check (at most once a day, only to the GitHub API and only with an
-  access token you configured; you can switch it off), downloading an update you accepted, the optional one-time FFmpeg download, free fonts you choose to download (from the
+- **Network access** is limited to the update check (at most once a day, only to GitHub; you can switch it off), downloading an update you accepted, the optional one-time FFmpeg download, free fonts you choose to download (from the
   google/fonts repository on GitHub), and ElevenLabs voices only if you add your own key (the text you synthesise is
   then sent to ElevenLabs).
 - **The local API is private.** It binds to `127.0.0.1`, accepts only loopback origins and requires the token in

@@ -5,6 +5,39 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 [Semantic Versioning](https://semver.org/). Versions with a suffix such as `-beta.1` are pre-releases and are
 delivered through the **Beta** update channel.
 
+## [1.1.0-beta.5] - 2026-10-16
+
+### New
+
+- **Write to the AI while it works.** Forgot something? Type it and press Enter while the agent is still working — it
+  picks the message up in the same run (Claude Code right after its current step; other agents when their step ends).
+  A queued message can be cancelled before it is delivered.
+- **AI chat brief: template targets.** Choose how much of the video gets template graphics (0–100 %), how many times
+  one template may repeat, and one graphic system or "All systems (mix)". Kadr's check flags anything off target and
+  the rough cut rotates templates across systems instead of repeating one style.
+- **Export folder remembered.** The folder you pick in the export dialog becomes the default (also after a restart);
+  Settings → Export sets or resets it. A missing folder falls back to the built-in one with a warning.
+- **Window state remembered.** Kadr reopens where it was: size, position, monitor, maximised and (on macOS) full screen.
+- **Several YouTube keys add up.** Keys of footage sources with per-key quotas (YouTube, Pexels, Pixabay, Freesound…)
+  are used in turn; a key that runs out is skipped until its quota resets. Settings → Footage shows each key's quota.
+- **ONNX Runtime on Apple silicon Macs.** Local AI models (beats, shots, faces, Parakeet speech recognition) install
+  with one click on M-series Macs (CPU).
+- **Updates straight from GitHub.** Kadr finds updates in the public release repository — no token, no licence-server
+  round trip.
+
+### Fixed
+
+- **Timeline playback freezing on the same picture** while sound and playhead went on: hung decoders are detected and
+  replaced, the stream skips a bad frame instead of stopping, and the player restarts the picture by itself.
+- **macOS:** menus no longer overlap in Ukrainian and other long languages; shortcuts show ⌘ ⇧ ⌥; the player/timeline
+  divider can't be dragged out of the window; the AI chat header no longer overlaps its Stop button.
+- **AI editing:** footage clips' own sound is muted under narration (and the check flags loud clip audio); captions
+  stay centred and no longer jump up under a full-screen end card; "New chat" no longer seems to close the chat when the
+  agent switches project.
+- **Epidemic Sound search** follows the server's live tool schema, retries with fewer filters when refused and reads
+  every answer shape; Settings → Music → Copy diagnostics produces a report (without your key) if it still fails.
+- Untranslated update and ONNX messages are now translated.
+
 ## [1.1.0-beta.3] - 2026-10-14
 
 ### New
