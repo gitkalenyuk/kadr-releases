@@ -5,6 +5,22 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 [Semantic Versioning](https://semver.org/). Versions with a suffix such as `-beta.1` are pre-releases and are
 delivered through the **Beta** update channel.
 
+## [1.1.0-beta.8] - 2026-10-16
+
+### New
+
+- **Your own themes.** Settings → Appearance → Create theme… opens the Theme editor: start from any theme and change
+  every colour (backgrounds, text, buttons, accent, borders, the timeline, each clip type, playhead, waveforms,
+  markers), the font, corner rounding and density, with a live preview on the real editor and a warning when text gets
+  hard to read. Save, duplicate, export as a `.kadrtheme` file and import themes from others. A theme can carry its own
+  panel layout.
+- **Move the panels.** Menu → Layout: 6 ready layouts (Default, Timeline on top, Player left, Wide timeline, Library
+  right, Focus), hide/show panels, AI chat on the left or right, and Customise layout… to drag the library, inspector
+  and timeline to any side. Save your layouts by name; Kadr remembers the last one.
+- **Movable, resizable windows.** Settings, Export, Keyboard shortcuts, Connect an AI and other big dialogs can be
+  dragged by their header, resized from any edge and maximised (button or double-click); they reopen where you left
+  them.
+
 ## [1.1.0-beta.7] - 2026-10-16
 
 ### New
