@@ -5,6 +5,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 [Semantic Versioning](https://semver.org/). Versions with a suffix such as `-beta.1` are pre-releases and are
 delivered through the **Beta** update channel.
 
+## [1.1.0-beta.6] - 2026-10-16
+
+### Fixed
+
+- **The window no longer turns black when you pick an AI model.** Pointing at a local Ollama / LM Studio with no models
+  crashed the whole interface on macOS (and could on Windows). Model lists are now always valid, and if any part of
+  the interface ever fails, a card with "Try again" / "Reload" / "Copy details" appears instead of a black window;
+  the error is written to Kadr's log (`logs/ui-errors.log` in Kadr's data folder).
+
 ## [1.1.0-beta.5] - 2026-10-16
 
 ### New
