@@ -5,6 +5,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 [Semantic Versioning](https://semver.org/). Versions with a suffix such as `-beta.1` are pre-releases and are
 delivered through the **Beta** update channel.
 
+## [1.1.0-beta.7] - 2026-10-16
+
+### New
+
+- **Editor themes.** Settings → Appearance (or Menu → Theme…) now offers 9 colour themes: Graphite (the classic dark
+  look), Daylight, Warm paper, Midnight, Noir, Pine, Film, Lilac and Rosé dusk — plus "Follow system". A theme applies
+  instantly, is remembered, and Kadr opens in it straight away (no dark flash on light themes). The timeline, chat,
+  menus, dialogs and settings follow the theme; the video preview stays dark like in CapCut.
+
 ## [1.1.0-beta.6] - 2026-10-16
 
 ### Fixed
