@@ -5,6 +5,30 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 [Semantic Versioning](https://semver.org/). Versions with a suffix such as `-beta.1` are pre-releases and are
 delivered through the **Beta** update channel.
 
+## [1.1.0-beta.9] - 2026-10-17
+
+### New
+
+- **A much better AI edit by default.** The assistant now finishes a real edit, not just footage + music: an opening
+  hook, animated full-screen cards on the main track (title, chapter cards, end card), animated frames with photos or
+  video inside (photos slowly move), graphics anchored to the exact moment the narration says a date, number, name,
+  place, event or brand, transitions on part of the cuts and one consistent colour look. Landscape footage fills tall
+  9:16 frames instead of a thin strip.
+- **More control in the chat brief.** Templates (coverage, repeats, one system or a mix, and the share of full-screen
+  cards / overlays / frames), Transitions (off … 100 %), Filters (auto / on / off), Anchors (dates, numbers, names,
+  places, events, brands) and **Ask me questions first**: the assistant asks 3–6 questions with ready answers and a
+  recommendation — just click (or type your own).
+- **Check project catches seams.** Half-second flashes of video between cards, tiny leftover slivers, graphics without
+  animation and still photos are flagged — and the new "Fix edit seams" repairs them in one step.
+
+### Fixed
+
+- **"Tool permission request failed: Stream closed"** in long AI runs: Kadr no longer closes Claude Code's channel
+  while it is still working, and reconnects the session by itself if it ever drops.
+- **Free Edge voices work again** (Microsoft changed its protocol on 2026-10-13).
+- **Footage from Wikimedia Commons / Internet Archive** imports again; locked Internet Archive items are skipped.
+- Captions in the cinematic styles are bigger and readable; each AI chat gets its own footage download budget.
+
 ## [1.1.0-beta.8] - 2026-10-16
 
 ### New
