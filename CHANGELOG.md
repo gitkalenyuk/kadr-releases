@@ -5,6 +5,25 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 [Semantic Versioning](https://semver.org/). Versions with a suffix such as `-beta.1` are pre-releases and are
 delivered through the **Beta** update channel.
 
+## [1.1.0-beta.11] - 2026-10-17
+
+### New
+
+- **Two ways to delete a project.** "Delete" works as before; "Delete completely…" first shows what will go and how
+  much space it frees (the project, caches, AI chats, AI-generated videos, templates made for it; exports only if you
+  tick them) and moves it to the Recycle Bin / Trash. Anything another project still uses, your original files and the
+  shared "Found" library are never touched.
+
+### Fixed
+
+- **Map city labels no longer flicker** while the camera moves: labels are planned over the whole map animation, stay
+  at least 0.7 s and fade in and out smoothly — identical in the player and in exports.
+- **Timeline mouse wheel:** the wheel always scrolls (vertically, or sideways when the tracks fit); Alt / Ctrl / Cmd +
+  wheel and trackpad pinch zoom around the cursor.
+- **Play button:** reacts instantly, never loses a click, plays to the very end and starts over from the beginning,
+  shows a loading ring while the first picture arrives. Projects open about 2.5× faster and the first frame appears
+  much sooner. macOS: a workaround for the player picture not showing during playback.
+
 ## [1.1.0-beta.10] - 2026-10-17
 
 ### New
