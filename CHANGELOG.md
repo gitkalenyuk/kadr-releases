@@ -5,6 +5,21 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 [Semantic Versioning](https://semver.org/). Versions with a suffix such as `-beta.1` are pre-releases and are
 delivered through the **Beta** update channel.
 
+## [1.1.0-beta.10] - 2026-10-17
+
+### New
+
+- **19 kinds of anchored graphics + your own.** The chat brief's Anchors now covers names, organizations, titles,
+  dates, clock times, durations, numbers, money, percents, measures, records, scores, places, events, brands, works,
+  documents, quotes and terms — grouped so the list stays tidy. "Add your own…" lets you type anything ("football
+  clubs", or exact words like "Titanic, Carpathia"); the AI puts a graphic on every mention, Check project flags missed
+  ones, and your own anchors are remembered for the next chats.
+
+### Changed
+
+- The AI assistant's step limit per message (API providers such as DeepSeek, OpenAI, Gemini) is now 400 instead of 100,
+  because rich edits need about 100 commands. Existing settings at the old 100 are raised automatically.
+
 ## [1.1.0-beta.9] - 2026-10-17
 
 ### New
