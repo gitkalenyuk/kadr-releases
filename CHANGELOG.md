@@ -2,6 +2,21 @@
 
 What changed in the two latest versions of Kadr. More on the official website: https://kadr.uk/
 
+## [1.1.0-beta.26] - 2026-10-24
+
+### New
+
+- **Photos and videos in your proportion** — a new «Photos & videos» chip in the AI chat brief and in channel
+  profiles: a slider «Photos N % · Videos N %» (or Auto). The AI keeps the share of photos and video on screen within
+  ±10 % of it, the rough cut aims for it, and «Check project» shows an error when the video is further off.
+- **Repeat limits** — how many times one video fragment and one photo may appear in a video (1 = never repeat, up to
+  10, or no limit), separately for video and photos, in the brief and the profile. The old «allow repeats» switch of a
+  profile is converted by itself. A freeze frame next to its clip or a photo cut into several pieces in a row counts as
+  one use.
+- **When there is only one photo** of a person who is named many times, the AI asks you what to do (in the modes with
+  questions). In Full auto it uses that photo at every mention with a different framing each time, never twice in a
+  row, and says so in the chat with the times; «Check project» shows it as a warning, not an error.
+
 ## [1.1.0-beta.25] - 2026-10-24
 
 ### New
@@ -31,43 +46,3 @@ What changed in the two latest versions of Kadr. More on the official website: h
 
 - The round Stop / Send buttons of the AI chat were squeezed into ovals in a narrow chat.
 - Licences "no derivatives" (ND) and "non-commercial" (NC) were treated as free to use.
-
-## [1.1.0-beta.24] - 2026-10-24
-
-### New
-
-- **Fit the whole timeline and back** — press Shift+Z or `\` (or the toolbar's «Zoom to fit» button) to see the
-  whole project at once, and press it again to go back to the zoom you had: to the exact same place when the playhead
-  did not move, otherwise around the new playhead. The button is highlighted while «back» is available. You can move
-  the key to any other one (for example Q) in Settings → Keyboard & mouse.
-- **Home / End** move the playhead to the start / end of the project, and the view follows. Frame steps and other
-  keyboard moves while paused now keep the playhead in view.
-- **Continue in a new session** — when a CLI agent (Codex, Claude Code…) keeps failing on a long chat (for example
-  Codex's `{"detail":"Bad Request"}`), the Continue strip now also offers «Continue in a new session». It starts a fresh
-  session of the same AI with Kadr's recap of the chat, which always keeps your first request, the brief and the
-  latest actions and results.
-- **Interrupted footage downloads ask first** — after a restart, footage downloads that were cut off no longer start
-  again by themselves. A card on Home says «N footage downloads from “Project” were interrupted» with Continue and
-  Cancel; it goes away by itself after 24 hours.
-
-### Improved
-
-- **Footage work on Home** — each footage job is shown under its project with its real kind and progress («Analysing
-  footage 3 of 7», «Downloading…», «Finding scenes…»), the clip title in the tooltip and a ✕ to stop it. The project
-  row has «Stop background downloads», and a click opens the project's footage jobs.
-- **Footage stops with the AI** — when an AI run ends or you press Stop, the footage analyses and downloads it started
-  stop too (clips already downloaded are still added).
-- **Lighter on the PC** — footage analysis and downloads run at background priority with fewer threads, at most 2
-  analyses and 3 footage jobs at once, so a long AI job no longer freezes the computer.
-- **One error card per failure** — a single agent failure used to show three identical cards; now there is one, with
-  the hint.
-- **The export folder button** opens the folder picker at the project's Exports folder (it is created when needed);
-  any other missing folder opens at its nearest existing parent. A real error now shows a message instead of nothing.
-
-### Fixed
-
-- The folder button in the export dialog did nothing on Windows until the first export of a project.
-- Footage downloads started by the AI kept running after the chat ended, appeared on Home as unknown downloads
-  without a project or a way to stop them, and came back after every restart.
-- A footage job with one clip showed 100 % while it was still being analysed.
-- Errors of the window's runtime now reach Kadr's log and bug reports.
