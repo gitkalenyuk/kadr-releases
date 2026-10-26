@@ -2,6 +2,25 @@
 
 What changed in the two latest versions of Kadr. More on the official website: https://kadr.uk/
 
+## [1.1.1] - 2026-10-26
+
+### New
+
+- **Time estimate before a big video** — before the AI starts, Kadr estimates the job from the brief (length, editing
+  style, repeat limits, photos, Safe YouTube, graphics) and, when it is big, shows something like «~420 shots · about
+  2–3 h» with the main reasons and one-click ways to make it lighter.
+- **Photos and videos in different colours on the timeline** — each clip gets its type's colour and a small icon, in
+  every colour theme.
+
+### Fixed
+
+- «Check project» on long videos: a repeated check now reuses what did not change (a 20-minute video: about 2 seconds
+  instead of a minute or more), and a full check covers the whole video instead of stopping half way.
+- Footage searches no longer take up to 10 minutes: a search stops once it has enough good candidates for every shot,
+  waits for slow sources only so long, and the AI can ask for more.
+- In Full auto the AI no longer ends its turn with «waiting for the helper to finish»: Kadr waits for the helpers and
+  downloads and continues by itself, and the chat shows what it is waiting for.
+
 ## [1.1.0] - 2026-10-26
 
 The first stable release of Kadr 1.1 — everything from the 28 betas, checked by our testers, in one version for
@@ -24,37 +43,3 @@ Windows and macOS.
 ### Fixed since beta.28
 
 - Nothing new — 1.1.0 is beta.28, promoted to the stable channel after testing.
-
-## [1.1.0-beta.28] - 2026-10-26
-
-### New
-
-- **Genre in the AI chat brief** — pick the direction of the video (true crime, history, science, nature, travel,
-  tech, business, kids, Shorts and more), the language and the length, and Kadr fills in everything else by itself:
-  editing style, templates, kinds of graphics, transitions, photos vs video, repeats, music and captions. Every chip
-  stays visible and editable; «Back to automatic» restores the genre's choice.
-- **Pieces from one video** — a new limit in the brief and in channel profiles: at most N pieces from one source
-  video (3 by default when fragments must not repeat). It counts found and downloaded footage only, never your own
-  recordings.
-- **Your own long recordings** — heavy files (4K, high bitrate, long) get a light preview copy in the background,
-  the timeline stays smooth with hundreds of clips, and the AI finds scenes through scene lists and contact sheets
-  instead of playing whole files. Editing a project with 600 clips is several times faster.
-- **Your profile vs this chat** — before a run Kadr compares your channel profile with the brief and warns about
-  conflicts (for example «YouTube first is the slowest source: expect ~N min of downloads»), with a «Fix the profile»
-  button.
-- **Weak model warning** — the model picker and the chat say when a model is too weak for editing (Haiku-class and
-  small models) and offer to switch to Sonnet / Opus.
-
-### Fixed
-
-- The footage queue no longer jams: searches never wait behind analyses, more jobs run at once on strong PCs, a job
-  that hangs is stopped and frees its place, jobs of a finished helper stop with it, several pieces of one video are
-  downloaded once, and the chat shows the place in the queue and the expected wait.
-- In Full auto (without «Ask me first») the AI no longer stops to ask you questions.
-- The YouTube title, description and tags are written in the language of the video, not of the interface; the export
-  dialog shows the language and lets you change it.
-- An export no longer crawls at half a frame per second because of a broken footage file with no playable frames:
-  Kadr checks every download, cuts a broken piece again or takes another clip, skips such a file at full speed and
-  names it after the export; «Check project» finds and repairs them in older projects.
-- No more single black frames at cuts (gaps shorter than a frame, photo frames fading through black, transitions into
-  graphics); «Check project» finds and fixes such flashes.
