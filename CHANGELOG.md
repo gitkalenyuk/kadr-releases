@@ -2,6 +2,29 @@
 
 What changed in the two latest versions of Kadr. More on the official website: https://kadr.uk/
 
+## [1.1.0] - 2026-10-26
+
+The first stable release of Kadr 1.1 — everything from the 28 betas, checked by our testers, in one version for
+Windows and macOS.
+
+### Highlights
+
+- **The AI edits the whole video** on your own Claude or ChatGPT subscription (or other AI providers): script,
+  voice-over, footage, motion graphics, captions, music, sound effects and a quality check — you review and render.
+- **Brief with genre** — pick the genre, language and length; Kadr sets the editing style, templates, graphics,
+  transitions, photos vs video, repeat limits, music and captions by itself.
+- **About 2,500 motion templates**, 30 editing styles, 27 channel profiles, maps with historical borders, a text
+  animator and modern transitions.
+- **Footage from 48 sources** with a smart queue, safe music (Kadr's own music beds, YouTube Audio Library, your
+  library, Epidemic Sound), 40 voice providers and local speech recognition.
+- **Your own recordings** — heavy 4K files get light preview copies, scene lists help the AI find the right moments.
+- **Everything checked** — «Check project» finds and fixes black flashes, broken files, rights risks and more; exports
+  name every clip that could not be shown.
+
+### Fixed since beta.28
+
+- Nothing new — 1.1.0 is beta.28, promoted to the stable channel after testing.
+
 ## [1.1.0-beta.28] - 2026-10-26
 
 ### New
@@ -35,21 +58,3 @@ What changed in the two latest versions of Kadr. More on the official website: h
   names it after the export; «Check project» finds and repairs them in older projects.
 - No more single black frames at cuts (gaps shorter than a frame, photo frames fading through black, transitions into
   graphics); «Check project» finds and fixes such flashes.
-
-## [1.1.0-beta.27] - 2026-10-24
-
-### New
-
-- **Kadr's own music** — Library → Audio → Music → «Kadr music»: choose a mood (calm, documentary, tense, upbeat, epic,
-  emotional), tempo and length (the project's length by default) and Kadr composes an original instrumental bed — no
-  samples, so it cannot get a copyright claim. Listen first, then add it at the playhead; long videos get several
-  beds joined smoothly. When you have no YouTube Audio Library folder, own music or Epidemic Sound connected, the AI
-  uses Kadr's music and tells you once how to connect a better source.
-
-### Fixed
-
-- Since beta.25 the AI could add no music and no sound effects at all when no music source was set up (tester report).
-  Free sound effects (CC0 and CC BY, credited in the export) are allowed again; music-like tracks, NC/ND licences and
-  Kevin MacLeod stay excluded.
-- When Kadr refuses something to the AI several times in a row, it now tells the AI to stop retrying, and bug reports
-  show why it was refused.
