@@ -2,6 +2,31 @@
 
 What changed in the two latest versions of Kadr. More on the official website: https://kadr.uk/
 
+## [1.1.2] - 2026-10-27
+
+### New
+
+- **Kadr AI music** — an optional free pack (Settings → Local AI models) that writes real music on your own graphics
+  card from a short description of the scene and the mood: about 10 seconds for a 30-second piece once the model is
+  loaded, free to use in monetised videos. Without the pack Kadr's built-in music beds are used, and these now have
+  melodies, more instruments and more variety.
+- **Smart music library** — Kadr listens to every track in your music folders (YouTube Audio Library included) once:
+  mood, energy, tempo, key, vocals and where the music builds and peaks. The AI now picks music by how it sounds, not
+  by file names. An optional CLAP model adds search by a description of the scene.
+- **More free music for the AI** — public-domain albums from netlabels on Internet Archive, Musopen classical
+  recordings and Freesound CC0 loops. A new switch «CC BY for AI» (off by default) also allows credited Creative
+  Commons music such as Kevin MacLeod; the credit goes into the credits file and the YouTube description.
+- **Footage base per channel** — switch it on in a channel profile and the clips downloaded for that channel are kept
+  with their descriptions; the AI looks there first (fewer downloads and tokens), and you decide whether clips already
+  used may come back.
+- **Home filters** — filter projects by channel profile and by Long / Shorts, group them by profile, and Shorts get a
+  badge on their cards.
+
+### Fixed
+
+- Footage hidden under full-screen cards: the AI no longer places (or downloads) clips that a full-screen graphic
+  covers, and «Check project» finds such clips and moves them to where they can be seen.
+
 ## [1.1.1] - 2026-10-26
 
 ### New
@@ -20,26 +45,3 @@ What changed in the two latest versions of Kadr. More on the official website: h
   waits for slow sources only so long, and the AI can ask for more.
 - In Full auto the AI no longer ends its turn with «waiting for the helper to finish»: Kadr waits for the helpers and
   downloads and continues by itself, and the chat shows what it is waiting for.
-
-## [1.1.0] - 2026-10-26
-
-The first stable release of Kadr 1.1 — everything from the 28 betas, checked by our testers, in one version for
-Windows and macOS.
-
-### Highlights
-
-- **The AI edits the whole video** on your own Claude or ChatGPT subscription (or other AI providers): script,
-  voice-over, footage, motion graphics, captions, music, sound effects and a quality check — you review and render.
-- **Brief with genre** — pick the genre, language and length; Kadr sets the editing style, templates, graphics,
-  transitions, photos vs video, repeat limits, music and captions by itself.
-- **About 2,500 motion templates**, 30 editing styles, 27 channel profiles, maps with historical borders, a text
-  animator and modern transitions.
-- **Footage from 48 sources** with a smart queue, safe music (Kadr's own music beds, YouTube Audio Library, your
-  library, Epidemic Sound), 40 voice providers and local speech recognition.
-- **Your own recordings** — heavy 4K files get light preview copies, scene lists help the AI find the right moments.
-- **Everything checked** — «Check project» finds and fixes black flashes, broken files, rights risks and more; exports
-  name every clip that could not be shown.
-
-### Fixed since beta.28
-
-- Nothing new — 1.1.0 is beta.28, promoted to the stable channel after testing.
