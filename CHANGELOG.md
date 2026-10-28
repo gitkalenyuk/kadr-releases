@@ -2,8 +2,8 @@
 
 What changed in the latest version of Kadr. More on the official website: https://kadr.uk/
 
-## [1.1.3] - 2026-10-28
+## [1.1.4] - 2026-10-28
 
-### Changed
+### Fixed
 
-- Hardened licence protection. Nothing changes in how you use Kadr — your projects, settings and exports are untouched.
+- Kadr 1.1.3 opened with an empty window (no version, licence or projects). Everything works again; your projects, settings and exports are untouched.
