@@ -21,7 +21,7 @@
 ## About this repository
 
 This repository only delivers **updates** to installed copies of Kadr (Windows and macOS). Kadr checks it by itself:
-**Settings → Updates**. Only the two latest versions are kept here.
+**Settings → Updates**. Only the current version is kept here; older versions stop working once a new one is out.
 
 Kadr works with an activation code. Everything else — what Kadr can do, examples, prices, how to buy and get the
 code — is on the official website: **[kadr.uk](https://kadr.uk/)**.
