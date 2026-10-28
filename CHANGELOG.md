@@ -2,6 +2,12 @@
 
 What changed in the two latest versions of Kadr. More on the official website: https://kadr.uk/
 
+## [1.1.3] - 2026-10-28
+
+### Changed
+
+- Hardened licence protection. Nothing changes in how you use Kadr — your projects, settings and exports are untouched.
+
 ## [1.1.2] - 2026-10-27
 
 ### New
@@ -26,22 +32,3 @@ What changed in the two latest versions of Kadr. More on the official website: h
 
 - Footage hidden under full-screen cards: the AI no longer places (or downloads) clips that a full-screen graphic
   covers, and «Check project» finds such clips and moves them to where they can be seen.
-
-## [1.1.1] - 2026-10-26
-
-### New
-
-- **Time estimate before a big video** — before the AI starts, Kadr estimates the job from the brief (length, editing
-  style, repeat limits, photos, Safe YouTube, graphics) and, when it is big, shows something like «~420 shots · about
-  2–3 h» with the main reasons and one-click ways to make it lighter.
-- **Photos and videos in different colours on the timeline** — each clip gets its type's colour and a small icon, in
-  every colour theme.
-
-### Fixed
-
-- «Check project» on long videos: a repeated check now reuses what did not change (a 20-minute video: about 2 seconds
-  instead of a minute or more), and a full check covers the whole video instead of stopping half way.
-- Footage searches no longer take up to 10 minutes: a search stops once it has enough good candidates for every shot,
-  waits for slow sources only so long, and the AI can ask for more.
-- In Full auto the AI no longer ends its turn with «waiting for the helper to finish»: Kadr waits for the helpers and
-  downloads and continues by itself, and the chat shows what it is waiting for.
