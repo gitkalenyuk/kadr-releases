@@ -2,10 +2,14 @@
 
 What changed in the latest version of Kadr. More on the official website: https://kadr.uk/
 
-## [1.1.5] - 2026-10-28
+## [1.1.6] - 2026-10-29
 
-### Changed
+### Fixed
 
-- Kadr now updates itself: it checks for a new version every 5 minutes and installs it on its own as soon as no work (export, AI run, download) is running — then it restarts by itself. Your projects are saved.
-- If Kadr's own program files are damaged or changed, it restores them automatically by installing the same version again.
-- Stronger licence protection.
+- Kadr uses much less memory on long AI editing sessions with big projects (no more crashes after many hours).
+- A chat stopped by the AI's usage limit now continues by itself as soon as the limit resets.
+- The AI reads big timelines with fewer tokens, so usage limits last longer.
+
+### New
+
+- Settings → Music: «Install CLAP» installs the music search model with one click.
