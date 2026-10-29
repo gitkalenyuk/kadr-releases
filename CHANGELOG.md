@@ -2,16 +2,13 @@
 
 What changed in the latest version of Kadr. More on the official website: https://kadr.uk/
 
-## [1.1.7] - 2026-10-29
+## [1.1.8] - 2026-10-29
 
-### Fixed
+### New — experimental features (all OFF by default)
 
-- Project durations on the Home screen (and other labels over pictures) are readable in every theme.
-- «Results per search» in Settings → Footage now really applies: the AI no longer stops at 100 results.
-- The AI no longer downloads several near-identical pieces of the same stock shot: one unchanging shot counts as one piece.
-- The AI may only use a part of a long video after looking at its scenes — no more guessed offsets with title cards or black.
+New tab **Settings → Experimental features**. Every feature there is off until you turn it on by hand, and Kadr works exactly as before without it.
 
-### New
-
-- Check project finds title cards, black frames and other bad parts inside found clips (in the first 30 s it is an error) and can trim them away.
-- «What's new» window: opens once after each update and explains where to find every new feature and how it works (Menu or Home → What's new).
+- **Source check**: Kadr checks that every footage source still answers and downloads (a button and once a day while idle); the AI skips a source that failed twice in a row.
+- **Fast YouTube**: YouTube searches and channel scans read YouTube's own pages — a search in under a second instead of 4–5, with upload dates; downloads stay on yt-dlp, which is also the fallback.
+- **Source statistics**: once a day only anonymous counts per footage source (searches and downloads that worked or failed — no words, files or projects) so broken sources are fixed sooner.
+- **Live data for charts**: the AI takes real figures from World Bank, Wikidata, the NBU, Steam, Open Library or TMDB and fills chart templates with them in the video's language, with the source line.
