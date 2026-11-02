@@ -2,14 +2,14 @@
 
 What changed in the latest version of Kadr. More on the official website: https://kadr.uk/
 
-## [1.1.10] - 2026-10-30
+## [1.1.11] - 2026-11-02
 
 ### Fixed
 
-- More video, fewer random photos: AI helpers look at chosen photos before importing and search for video first; the AI says a subject has no video only after real searches, Check project warns when a video is mostly photos, and long videos get more downloads.
-- AI questions are harder to miss: similar questions arrive as one card, helpers' questions appear too, and the bar under the chat says a question is waiting, with a button that jumps to it.
-- The limit card says when the chat will continue and that this uses your next limit window; «Only this window» cancels it.
-- Paid voices: «Allow paid calls of this provider until the end of this turn» on the approval card (the daily limit still applies); OpenSpeaker's price is learned from what it actually charged, so «Ask before paying» works after the first voiceover.
-- Codex models: Load models asks Codex itself for its list; GPT-6.1 Terra added.
-- Bug reports can be edited or deleted in My reports until they have been read.
-- The API docs page opens again.
+- Kadr AI music no longer makes noise: a wrong setting made the AI music pack generate noise-like sound; nothing to reinstall, old noisy tracks aren't reused, a noisy result is refused, and on Auto Kadr uses its own music instead.
+- AI chats don't disappear after a crash: an interrupted chat opens with Continue even many hours later; older chats are always behind the history icon.
+- Work continues after a crash: on Windows a chat that was running continues once by itself (this uses your limits; «Continue after a crash» in Settings → AI assistant → Long tasks turns it off), otherwise a Home card and a notification offer Continue. On Mac: the card and the notification only.
+- «When everything finishes» survives a crash restart for up to 24 hours and waits until the chat continues; if the chat can't continue, the PC stays on and Kadr tells you.
+- Updates finish even if Claude Code or another tool is using Kadr's MCP at that moment, and Kadr reopens afterwards.
+- Steadier when memory runs short: Check project and video decoding use less memory when the PC's memory is almost full, so there should be fewer crashes; crash reports record memory use, including the names of the biggest programs, never their paths or arguments.
+- Helpers get more time to look through footage on longer videos, and a look stopped before it finished no longer counts.
