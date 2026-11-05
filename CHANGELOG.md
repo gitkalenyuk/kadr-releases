@@ -2,14 +2,16 @@
 
 What changed in the latest version of Kadr. More on the official website: https://kadr.uk/
 
-## [1.1.11] - 2026-11-02
+## [1.1.12] - 2026-11-05
+
+### Added
+
+- Favourites: a star on every Library card (templates, captions, text, filters, effects, transitions, stickers, sounds and more) and a «Favourites» chip at the start of each tab; the AI prefers your favourites when they fit just as well.
+- Experimental, off by default: Creative Commons videos from YouTube (Settings → Experimental features): with Fast YouTube on, searches return only videos marked CC BY, credited automatically on export.
 
 ### Fixed
 
-- Kadr AI music no longer makes noise: a wrong setting made the AI music pack generate noise-like sound; nothing to reinstall, old noisy tracks aren't reused, a noisy result is refused, and on Auto Kadr uses its own music instead.
-- AI chats don't disappear after a crash: an interrupted chat opens with Continue even many hours later; older chats are always behind the history icon.
-- Work continues after a crash: on Windows a chat that was running continues once by itself (this uses your limits; «Continue after a crash» in Settings → AI assistant → Long tasks turns it off), otherwise a Home card and a notification offer Continue. On Mac: the card and the notification only.
-- «When everything finishes» survives a crash restart for up to 24 hours and waits until the chat continues; if the chat can't continue, the PC stays on and Kadr tells you.
-- Updates finish even if Claude Code or another tool is using Kadr's MCP at that moment, and Kadr reopens afterwards.
-- Steadier when memory runs short: Check project and video decoding use less memory when the PC's memory is almost full, so there should be fewer crashes; crash reports record memory use, including the names of the biggest programs, never their paths or arguments.
-- Helpers get more time to look through footage on longer videos, and a look stopped before it finished no longer counts.
+- The channel profile's transitions are the only ones the AI uses, even when the editing style or the template system suggests others; Check project warns about any other transition on the main track and Fix replaces it.
+- Template coverage counts media frames, lower thirds and other plates together with full-screen cards; only texture overlays (grain, dust, light leaks), backgrounds and designed transitions don't. The brief explains it and warns the AI when its targets can't all be met.
+- Steadier with several projects at once: when the PC's memory is almost full, background video work waits its turn and unused video decoders close.
+- Several Kadr AI music tracks in a row on 8 GB graphics cards: graphics memory is freed after every track and returns to video editing sooner.
