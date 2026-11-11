@@ -16933,12 +16933,12 @@ zerocopy 0.8.52 - LICENSE-MIT:
 MICROSOFT VISUAL C++ RUNTIME (WINDOWS)
 The Windows build of wgpu-native needs the Microsoft Visual C++ runtime
 library vcruntime140.dll, and ONNX Runtime (downloaded on demand for the
-local analysis models) needs vcruntime140_1.dll, msvcp140.dll and
-msvcp140_1.dll. So that GPU rendering and the local models also work on PCs
+local analysis models) needs vcruntime140_1.dll, msvcp140.dll,
+msvcp140_1.dll and, in its WebGPU build, msvcp140_atomic_wait.dll. So that GPU rendering and the local models also work on PCs
 without the "Microsoft Visual C++ Redistributable", Kadr ships these files
 next to its executables:
 
-    Microsoft Visual C++ Runtime 14.50.35719.0 (vcruntime140.dll, vcruntime140_1.dll, msvcp140.dll, msvcp140_1.dll; x64)
+    Microsoft Visual C++ Runtime 14.50.35719.0 (vcruntime140.dll, vcruntime140_1.dll, msvcp140.dll, msvcp140_1.dll, msvcp140_atomic_wait.dll; x64)
     Source: Visual Studio 2026 (18) Community,
     VC\Redist\MSVC\14.50.35710\x64\Microsoft.VC145.CRT\ (unmodified,
     Authenticode-signed by Microsoft)
@@ -17778,6 +17778,33 @@ see the Noto Animated Emoji notice above.
       AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
       CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
       IN THE SOFTWARE.
+    -----
+
+Kadr AI music (wave 19, 1.1.2): components downloaded on demand by tools.install {tool: "acestep"}
+  Nothing below is shipped with Kadr. When the user installs Kadr AI music (Settings → Local AI models), Kadr downloads
+  these into its own tools folder (<tools>/acestep), each pinned by version and SHA-256, and runs them only on this
+  computer. Details: docs/research/motion/data-licences.md §10 and docs/design/wave19.md "As built: team C".
+
+    ----- 80-ace-step-music.txt -----
+    ACE-Step 1.5 (https://github.com/ace-step/ACE-Step-1.5), source at tag v0.1.8 (commit dce62140)
+      Copyright (c) ACE Studio and StepFun. Licence: MIT.
+      Model weights: ACE-Step/acestep-v15-base (revision e432212f) and the VAE of ACE-Step/Ace-Step1.5 (revision
+      19671f40) on Hugging Face. Licence: MIT. The model card says the generated music may be used for commercial
+      purposes; Kadr marks such music "Kadr AI music (ACE-Step 1.5)" in the export's credits file (no credit is required).
+
+    Qwen3-Embedding-0.6B (the text encoder inside ACE-Step/Ace-Step1.5), Copyright (c) Alibaba Cloud (Qwen team)
+      Licence: Apache License 2.0, https://www.apache.org/licenses/LICENSE-2.0
+
+    uv 0.12.24 (https://github.com/astral-sh/uv), Copyright (c) Astral Software Inc.
+      Licence: MIT OR Apache-2.0. Used only to set up the private Python environment above.
+
+    CPython 3.12 (python-build-standalone, installed by uv), Copyright (c) Python Software Foundation
+      Licence: Python Software Foundation License Version 2.
+
+    PyTorch 2.7.1 (+ CUDA 12.8 runtime wheels from download.pytorch.org on Windows/Linux), Copyright (c) Meta Platforms, Inc.
+      and affiliates. Licence: BSD-3-Clause. The NVIDIA CUDA runtime libraries inside those wheels are under the NVIDIA
+      CUDA Toolkit EULA (redistributable components). The other Python packages are those pinned by ACE-Step's own
+      uv.lock (transformers, diffusers, torchaudio, soundfile, …), each under its own licence (Apache-2.0, BSD, MIT).
     -----
 
 8. SYSTEM COMPONENTS USED BUT NOT DISTRIBUTED
