@@ -2,23 +2,12 @@
 
 What changed in the latest version of Kadr. More on the official website: https://kadr.uk/
 
-## [1.2.0] - 2026-11-12
+## [1.2.1] - 2026-11-13
 
 ### Added
 
-- Templates fit the video: the AI chooses them by the topic of the video and of each moment, at random among the best, and remembers what the channel's last videos used. Titles and lower thirds keep the channel's graphic system; frames, charts, quotes, overlays and transitions come from the whole library in the channel's colours and fonts. One template appears at most twice per video (channel profile: Template variety, Repeats).
-- 911 new templates for every genre in 16:9 and 9:16: 243 media frames and multiscreens, 256 kinetic titles / quotes / callouts / lower thirds, 220 infographics, 190 transitions, overlays and animated backgrounds.
-- Timeline, selected clips → right-click: «Put into templates…» (shares of frames / overlays / full-screen / plain, categories, a list to replace, pin and shuffle, one undo step, «Ask AI») and «Apply transitions…» (share of cuts, families, length, transition sounds).
-- Sound design, on by default in AI edits and as a timeline button: music by sections with crossfades, effects on transitions, graphics and camera moves, sounds for what the narration names, ambience under the scenes (28 new ambience beds). Music from your library first, then safe free sources, then Kadr's generator.
-- Channel profiles: the channel's own template set («Only these templates»), a «Never use» list (also global, from a template's menu), «Suggest for this channel», and the channel's own colours, fonts, motion and sound family.
-- Content packs (Settings → Content packs): download inside Kadr or import a pack file, choose the folder, kept across updates, used by the AI. First packs: 823 templates and 159 sounds.
-- Home: select projects by dragging a frame (Shift adds, Ctrl toggles). AI chat: sent photos and files open full screen.
-
-### Changed
-
-- Kadr makes two formats: 16:9 and 9:16. Older projects in other formats still open and export as before.
-- The AI keeps every kind of clip on its own track and packs the tracks when it finishes; «Compact tracks» on the toolbar does it for your edits.
-
-### Fixed
-
-- A message quoting the AI («there is no such footage in the archives») no longer becomes a ban on those sources.
+- Quick commands in the AI chat: save any message you sent with the bookmark under it (name it, edit the text), then pick it in any chat of any project from the ⚡ button next to the paperclip, the brief or by typing / and its name — the text goes into the message box, nothing is sent by itself. Edit or delete from the list; Export / Import moves them to another computer.
+- Motion for stills in one click (Inspector → Animation → Motion): Ken Burns, zoom, pan, focus on a detail, punch-in, shake, drift and parallax with a strength slider — the picture always covers the frame. Arrows, circles and frames can be pinned to a point of the clip under them and follow its zoom (Graphic tab → Pin to the clip below).
+- Experimental — Deep competitor analysis (Settings → Experimental features; then Channel profiles → Create from a competitor channel → Deep): 10, 15 or 20 videos, their scripts read, the most typical ones studied whole, every scene looked at by the AI. The result is a channel profile with a recipe — format, structure, kinds of inserts, sources, motion and sound — that the channel's videos follow; Check project warns when a video drifts from it.
+- Experimental — Memes and GIFs: GIPHY (with your own free key) and popular Imgflip meme templates in the footage finder; the AI uses them only after you switch on «Memes for AI» in Settings → Footage, and credits them.
+- Experimental — Website screenshots: a picture of any web page by its link, taken with the Edge or Chrome already on your computer, added to the project as a photo with the page address as its source (Media → the globe button).
